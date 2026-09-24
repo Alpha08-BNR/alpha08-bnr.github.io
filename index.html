@@ -24,6 +24,8 @@
             --text-code: #cf222e;
             --toggle-btn-bg: #24292f;
             --toggle-btn-text: #ffffff;
+            --gear-color: #24292f; /* Bánh răng màu đen khi nền sáng */
+            --splash-bg: #f6f8fa;
         }
 
         [data-theme="dark"] {
@@ -39,6 +41,52 @@
             --text-code: #ff7b72;
             --toggle-btn-bg: #f0f6fc;
             --toggle-btn-text: #24292f;
+            --gear-color: #f0f6fc; /* Bánh răng màu trắng khi nền tối */
+            --splash-bg: #0d1117;
+        }
+
+        /* === MÀN HÌNH ĐỘNG (SPLASH SCREEN) === */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--splash-bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            cursor: pointer;
+            transition: opacity 0.5s ease, background-color 0.3s;
+        }
+
+        .gear-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .gear-icon {
+            width: 80px;
+            height: 80px;
+            fill: var(--gear-color);
+            animation: spin 3s linear infinite;
+            transition: fill 0.3s;
+        }
+
+        .splash-text {
+            color: var(--gear-color);
+            font-size: 0.95rem;
+            font-family: monospace;
+            opacity: 0.8;
+            transition: color 0.3s;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         /* === CẤU TRÚC GIAO DIỆN === */
@@ -190,7 +238,6 @@
             .nav-links.active {
                 display: flex;
             }
-            /* Hiệu ứng chuyển nút 3 gạch thành X */
             .menu-toggle.open .bar:nth-child(1) {
                 transform: translateY(8px) rotate(45deg);
             }
@@ -204,6 +251,16 @@
     </style>
 </head>
 <body>
+
+    <!-- Màn hình động bánh răng (Splash Screen) -->
+    <div id="splash-screen">
+        <div class="gear-container">
+            <svg class="gear-icon" viewBox="0 0 24 24">
+                <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.97 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.97 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L15.44,17.95C15.96,18.34 16.5,18.68 17.13,18.93L17.5,21.58C17.54,21.82 17.75,22 18,22H22C22.25,22 22.46,21.82 22.5,21.58L22.87,18.93C23.5,18.68 24.04,18.34 24.56,17.95L27.05,18.95C27.27,19.03 27.54,18.95 27.66,18.73L29.66,15.27C29.79,15.05 29.73,14.78 29.54,14.63L19.43,12.97Z"></path>
+            </svg>
+            <span class="splash-text">Click anywhere to enter</span>
+        </div>
+    </div>
 
     <!-- Thanh điều hướng đa chức năng -->
     <nav class="navbar">
@@ -227,7 +284,8 @@
     </nav>
 
     <h1>Welcome to Alpha08-BNR Research Page</h1>
-    <p>Low-Level Programming Expert, Hardware Specialist, and Malware Developer.</p>
+    <p>Low-Level Programming, Hardware Specialist, and Malware Developer.</p>
+    <p><em>Nơi đây lưu trữ các thứ nhảm nhí của tôi</em></p>
     <p>Below are the publicly shared projects and technical articles:</p>
 
     <div class="card" id="hardware">
@@ -254,8 +312,17 @@
         </p>
     </div>
 
-    <!-- Script xử lý Đổi màu & Đóng/Mở Menu -->
+    <!-- Script xử lý Đổi màu, Đóng mở Menu & Màn hình động -->
     <script>
+        // --- 0. Xử lý màn hình động (Splash Screen) ---
+        const splashScreen = document.getElementById('splash-screen');
+        splashScreen.addEventListener('click', () => {
+            splashScreen.style.opacity = '0';
+            setTimeout(() => {
+                splashScreen.style.display = 'none';
+            }, 500);
+        });
+
         // --- 1. Xử lý đóng mở Menu 3 gạch ---
         const hamburgerBtn = document.getElementById('hamburger-btn');
         const navMenu = document.getElementById('nav-menu');
@@ -290,3 +357,4 @@
     </script>
 </body>
 </html>
+
