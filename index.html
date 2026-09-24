@@ -23,7 +23,7 @@
             --text-code: #cf222e;
             --toggle-btn-bg: #24292f;
             --toggle-btn-text: #ffffff;
-            --gear-color: #000000; /* Nền sáng -> bánh răng & 3 gạch màu ĐEN */
+            --gear-color: #000000; /* Nút 3 gạch màu ĐEN khi nền trắng */
             --splash-bg: #f6f8fa;
         }
 
@@ -39,7 +39,7 @@
             --text-code: #ff7b72;
             --toggle-btn-bg: #f0f6fc;
             --toggle-btn-text: #24292f;
-            --gear-color: #ffffff; /* Nền tối -> bánh răng & 3 gạch màu TRẮNG */
+            --gear-color: #ffffff; /* Nút 3 gạch màu TRẮNG khi nền tối */
             --splash-bg: #0d1117;
         }
 
@@ -54,7 +54,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 10; /* Z-index thấp hơn thanh navbar để không che dấu 3 gạch */
+            z-index: 10; 
             transition: background-color 0.3s;
         }
 
@@ -62,28 +62,43 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
         }
 
+        /* SVG Bánh răng to hơn */
         .gear-icon {
-            width: 80px;
-            height: 80px;
-            fill: var(--gear-color);
-            animation: spin 3s linear infinite;
-            transition: fill 0.3s;
+            width: 150px;
+            height: 150px;
+        }
+
+        /* Hiệu ứng xoay của 2 bánh răng */
+        .gear-outer-group {
+            transform-origin: 50% 50%;
+            animation: spin-cw 4s linear infinite;
+        }
+
+        .gear-inner-group {
+            transform-origin: 50% 50%;
+            animation: spin-ccw 3s linear infinite;
+        }
+
+        @keyframes spin-cw {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes spin-ccw {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(-360deg); }
         }
 
         .splash-text {
             color: var(--gear-color);
-            font-size: 0.95rem;
+            font-size: 1.1rem;
             font-family: monospace;
-            opacity: 0.8;
+            font-weight: bold;
+            opacity: 0.9;
             transition: color 0.3s;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
 
         /* === CẤU TRÚC GIAO DIỆN CHÍNH === */
@@ -99,7 +114,6 @@
             transition: background-color 0.3s, color 0.3s;
         }
 
-        /* Chứa tất cả nội dung (ẩn đi lúc mới vào trang) */
         #main-content {
             display: none; 
             position: relative;
@@ -116,12 +130,12 @@
             padding: 18px;
             border-radius: 8px;
             margin-bottom: 20px;
-            display: none; /* Mặc định ẩn các chủ đề */
+            display: none;
             transition: background-color 0.3s, border-color 0.3s;
         }
         
         .card.active-section {
-            display: block; /* Hiện thị khi click trong menu */
+            display: block; 
         }
 
         code {
@@ -144,13 +158,12 @@
             justify-content: space-between;
             align-items: center;
             padding: 12px 20px;
-            z-index: 1000; /* Luôn nổi lên trên cùng */
+            z-index: 1000;
             transition: background-color 0.3s, border-color 0.3s;
         }
         .nav-logo { font-weight: bold; color: var(--text-heading); font-size: 1.1rem; }
         .nav-actions { display: flex; align-items: center; position: relative; }
 
-        /* Menu dạng Dropdown xổ xuống */
         .nav-links {
             display: none;
             flex-direction: column;
@@ -190,7 +203,7 @@
             margin-right: 15px;
         }
 
-        /* === NÚT 3 GẠCH (Luôn hiện trên mọi thiết bị) === */
+        /* === NÚT 3 GẠCH === */
         .menu-toggle {
             display: flex;
             flex-direction: column;
@@ -205,7 +218,7 @@
         .menu-toggle .bar {
             height: 3px;
             width: 100%;
-            background-color: var(--gear-color); /* Màu nghịch với nền */
+            background-color: var(--gear-color);
             border-radius: 2px;
             transition: all 0.3s ease;
         }
@@ -216,11 +229,38 @@
 </head>
 <body>
 
-    <!-- Màn hình bánh răng (Chờ click vào Menu mới ẩn đi) -->
+    <!-- Màn hình 2 bánh răng quay -->
     <div id="splash-screen">
         <div class="gear-container">
-            <svg class="gear-icon" viewBox="0 0 24 24">
-                <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.97 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.97 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L15.44,17.95C15.96,18.34 16.5,18.68 17.13,18.93L17.5,21.58C17.54,21.82 17.75,22 18,22H22C22.25,22 22.46,21.82 22.5,21.58L22.87,18.93C23.5,18.68 24.04,18.34 24.56,17.95L27.05,18.95C27.27,19.03 27.54,18.95 27.66,18.73L29.66,15.27C29.79,15.05 29.73,14.78 29.54,14.63L19.43,12.97Z"></path>
+            <svg class="gear-icon" viewBox="0 0 100 100">
+                <defs>
+                    <!-- Lỗ khoét cho bánh đỏ (để nhét bánh xanh vào) -->
+                    <mask id="outer-hole">
+                        <rect width="100" height="100" fill="white" />
+                        <circle cx="50" cy="50" r="28" fill="black" />
+                    </mask>
+                    <!-- Lỗ khoét cho bánh xanh (trục giữa) -->
+                    <mask id="inner-hole">
+                        <rect width="100" height="100" fill="white" />
+                        <circle cx="50" cy="50" r="10" fill="black" />
+                    </mask>
+                </defs>
+
+                <!-- BÁNH RĂNG BÊN NGOÀI (MÀU ĐỎ - 6 cánh) -->
+                <g class="gear-outer-group" mask="url(#outer-hole)" fill="#e74c3c">
+                    <rect x="40" y="2" width="20" height="96" rx="3" transform="rotate(0 50 50)" />
+                    <rect x="40" y="2" width="20" height="96" rx="3" transform="rotate(60 50 50)" />
+                    <rect x="40" y="2" width="20" height="96" rx="3" transform="rotate(120 50 50)" />
+                    <circle cx="50" cy="50" r="38" />
+                </g>
+
+                <!-- BÁNH RĂNG BÊN TRONG (MÀU XANH DƯƠNG - 6 cánh) -->
+                <g class="gear-inner-group" mask="url(#inner-hole)" fill="#3498db">
+                    <rect x="43" y="23" width="14" height="54" rx="2" transform="rotate(15 50 50)" />
+                    <rect x="43" y="23" width="14" height="54" rx="2" transform="rotate(75 50 50)" />
+                    <rect x="43" y="23" width="14" height="54" rx="2" transform="rotate(135 50 50)" />
+                    <circle cx="50" cy="50" r="21" />
+                </g>
             </svg>
             <span class="splash-text">System Core Active</span>
         </div>
@@ -230,7 +270,6 @@
     <nav class="navbar">
         <div class="nav-logo">Alpha08-BNR</div>
         <div class="nav-actions">
-            <!-- Nút đổi màu giao diện -->
             <button class="theme-toggle-btn" id="theme-btn">Đổi màu đen</button>
             
             <ul class="nav-links" id="nav-menu">
@@ -279,7 +318,6 @@
     </div>
 
     <script>
-        // Các biến cần dùng
         const hamburgerBtn = document.getElementById('hamburger-btn');
         const navMenu = document.getElementById('nav-menu');
         const menuLinks = document.querySelectorAll('.nav-links a');
@@ -288,35 +326,32 @@
         const cards = document.querySelectorAll('.card');
         const themeBtn = document.getElementById('theme-btn');
 
-        // 1. Đóng/Mở menu 3 gạch
+        // Mở menu 3 gạch
         hamburgerBtn.addEventListener('click', () => {
             navMenu.classList.toggle('active');
             hamburgerBtn.classList.toggle('open');
         });
 
-        // 2. Chuyển chủ đề & Tắt bánh răng
+        // Click chọn chủ đề để ẩn bánh răng và hiện nội dung
         menuLinks.forEach(link => {
             link.addEventListener('click', () => {
                 const targetId = link.getAttribute('data-target');
 
-                // Ẩn bánh răng và hiện toàn bộ khối nội dung chính
                 splashScreen.style.display = 'none';
                 mainContent.style.display = 'block';
 
-                // Ẩn tất cả các card, sau đó chỉ hiện card được chọn
                 cards.forEach(card => card.classList.remove('active-section'));
                 const targetCard = document.getElementById(targetId);
                 if (targetCard) {
                     targetCard.classList.add('active-section');
                 }
 
-                // Tự động đóng menu sau khi chọn
                 navMenu.classList.remove('active');
                 hamburgerBtn.classList.remove('open');
             });
         });
 
-        // 3. Xử lý nút đổi màu sáng/tối
+        // Nút đổi màu giao diện
         themeBtn.addEventListener('click', () => {
             const currentTheme = document.documentElement.getAttribute('data-theme');
             if (currentTheme === 'dark') {
