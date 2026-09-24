@@ -32,7 +32,6 @@
             overflow-x: hidden;
         }
 
-        /* Navigation Header */
         header {
             position: fixed;
             top: 0;
@@ -102,7 +101,6 @@
             transform: translateY(-1px);
         }
 
-        /* Hamburger Menu Icon */
         .hamburger {
             display: none;
             flex-direction: column;
@@ -123,7 +121,6 @@
             transition: var(--transition);
         }
 
-        /* Hero Section */
         .hero {
             padding: 10rem 2rem 6rem;
             max-width: 1200px;
@@ -206,7 +203,6 @@
         .code-content .keyword { color: #60a5fa; }
         .code-content .comment { color: #6b7280; font-style: italic; }
 
-        /* Features Section */
         .features {
             padding: 6rem 2rem;
             background-color: var(--surface-color);
@@ -266,7 +262,6 @@
             font-size: 0.95rem;
         }
 
-        /* Footer */
         footer {
             background-color: var(--surface-color);
             border-top: 1px solid var(--border-color);
@@ -305,7 +300,6 @@
             font-size: 0.9rem;
         }
 
-        /* Responsive Mobile Styles */
         @media (max-width: 768px) {
             .hamburger {
                 display: flex;
@@ -344,17 +338,11 @@
                 flex-direction: column;
                 gap: 1.5rem;
             }
-
-            .cta-btn {
-                padding: 0.35rem 0.75rem;
-                font-size: 0.8rem;
-            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Navigation Header -->
     <header>
         <div class="nav-container">
             <a href="#" class="logo">Nexus<span>Core</span></a>
@@ -372,7 +360,6 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
             <h1>Binary System Architecture & Low-Level Control</h1>
@@ -401,7 +388,6 @@
         </div>
     </section>
 
-    <!-- Features Section -->
     <section id="architecture" class="features">
         <div class="section-header">
             <h2>Core Architectural Principles</h2>
@@ -426,7 +412,6 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer>
         <div class="footer-content">
             <a href="#" class="logo">Nexus<span>Core</span></a>
@@ -435,11 +420,10 @@
                 <li><a href="source-code.html">Source Code</a></li>
             </ul>
         </div>
-        <p class="copyright">&copy; 2026 Nexus Systems Architecture. All source code and documentation written in English.</p>
+        <p class="copyright">&copy; 2026 Nexus Systems Architecture. All rights reserved.</p>
     </footer>
 
     <script>
-        // Hamburger Menu Toggle for Mobile
         const hamburger = document.getElementById('hamburger');
         const navLinks = document.getElementById('navLinks');
 
@@ -447,7 +431,6 @@
             navLinks.classList.toggle('active');
         });
 
-        // Close menu when clicking a link on mobile
         document.querySelectorAll('.nav-links a').forEach(link => {
             link.addEventListener('click', () => {
                 navLinks.classList.remove('active');
