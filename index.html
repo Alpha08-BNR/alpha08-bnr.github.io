@@ -23,7 +23,7 @@
             --text-code: #cf222e;
             --toggle-btn-bg: #24292f;
             --toggle-btn-text: #ffffff;
-            --gear-color: #000000; /* Nút 3 gạch màu ĐEN khi nền trắng */
+            --gear-color: #000000;
             --splash-bg: #f6f8fa;
         }
 
@@ -39,7 +39,7 @@
             --text-code: #ff7b72;
             --toggle-btn-bg: #f0f6fc;
             --toggle-btn-text: #24292f;
-            --gear-color: #ffffff; /* Nút 3 gạch màu TRẮNG khi nền tối */
+            --gear-color: #ffffff;
             --splash-bg: #0d1117;
         }
 
@@ -65,21 +65,27 @@
             gap: 20px;
         }
 
-        /* SVG Bánh răng to hơn */
         .gear-icon {
             width: 300px;
             height: 300px;
+            /* Tạo hiệu ứng phát sáng cho toàn bộ cụm bánh răng */
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.4));
         }
 
-        /* Hiệu ứng xoay của 2 bánh răng */
+        /* Bánh ngoài màu đỏ trong suốt & phát sáng */
         .gear-outer-group {
-            transform-origin: 50% 50%;
+            transform-origin: 35% 50%;
             animation: spin-cw 4s linear infinite;
+            fill: rgba(231, 76, 60, 0.75); /* Đỏ trong suốt */
+            filter: drop-shadow(0 0 8px rgba(231, 76, 60, 0.8));
         }
 
+        /* Bánh trong màu xanh dương trong suốt & phát sáng, cách xa bánh ngoài */
         .gear-inner-group {
-            transform-origin: 50% 50%;
+            transform-origin: 75% 50%;
             animation: spin-ccw 1s linear infinite;
+            fill: rgba(52, 152, 219, 0.75); /* Xanh trong suốt */
+            filter: drop-shadow(0 0 8px rgba(52, 152, 219, 0.8));
         }
 
         @keyframes spin-cw {
@@ -99,6 +105,7 @@
             font-weight: bold;
             opacity: 0.9;
             transition: color 0.3s;
+            text-shadow: 0 0 10px rgba(0, 150, 255, 0.5);
         }
 
         /* === CẤU TRÚC GIAO DIỆN CHÍNH === */
@@ -229,37 +236,28 @@
 </head>
 <body>
 
-    <!-- Màn hình 2 bánh răng quay -->
+    <!-- Màn hình 2 bánh răng trong suốt phát sáng, cách xa nhau -->
     <div id="splash-screen">
         <div class="gear-container">
-            <svg class="gear-icon" viewBox="0 0 100 100">
-                <defs>
-                    <!-- Lỗ khoét cho bánh đỏ (để nhét bánh xanh vào) -->
-                    <mask id="outer-hole">
-                        <rect width="100" height="100" fill="white" />
-                        <circle cx="50" cy="50" r="28" fill="black" />
-                    </mask>
-                    <!-- Lỗ khoét cho bánh xanh (trục giữa) -->
-                    <mask id="inner-hole">
-                        <rect width="100" height="100" fill="white" />
-                        <circle cx="50" cy="50" r="10" fill="black" />
-                    </mask>
-                </defs>
-
-                <!-- BÁNH RĂNG BÊN NGOÀI (MÀU ĐỎ - 6 cánh) -->
-                <g class="gear-outer-group" mask="url(#outer-hole)" fill="#e74c3c">
-                    <rect x="40" y="2" width="20" height="96" rx="3" transform="rotate(0 50 50)" />
-                    <rect x="40" y="2" width="20" height="96" rx="3" transform="rotate(60 50 50)" />
-                    <rect x="40" y="2" width="20" height="96" rx="3" transform="rotate(120 50 50)" />
-                    <circle cx="50" cy="50" r="38" />
+            <svg class="gear-icon" viewBox="0 0 160 100">
+                <!-- BÁNH RĂNG BÊN NGOÀI (MÀU ĐỎ TRONG SUỐT - TÂM Ở X=35, Y=50) -->
+                <g class="gear-outer-group">
+                    <rect x="25" y="5" width="20" height="90" rx="4" transform="rotate(0 35 50)" />
+                    <rect x="25" y="5" width="20" height="90" rx="4" transform="rotate(60 35 50)" />
+                    <rect x="25" y="5" width="20" height="90" rx="4" transform="rotate(120 35 50)" />
+                    <circle cx="35" cy="50" r="32" />
+                    <!-- Lỗ khoét rỗng giữa bánh đỏ -->
+                    <circle cx="35" cy="50" r="16" fill="var(--splash-bg)" />
                 </g>
 
-                <!-- BÁNH RĂNG BÊN TRONG (MÀU XANH DƯƠNG - 6 cánh) -->
-                <g class="gear-inner-group" mask="url(#inner-hole)" fill="#3498db">
-                    <rect x="43" y="23" width="14" height="54" rx="2" transform="rotate(15 50 50)" />
-                    <rect x="43" y="23" width="14" height="54" rx="2" transform="rotate(75 50 50)" />
-                    <rect x="43" y="23" width="14" height="54" rx="2" transform="rotate(135 50 50)" />
-                    <circle cx="50" cy="50" r="21" />
+                <!-- BÁNH RĂNG BÊN TRONG (MÀU XANH DƯƠNG TRONG SUỐT - TÂM Ở X=120, Y=50) -->
+                <g class="gear-inner-group">
+                    <rect x="111" y="20" width="18" height="60" rx="3" transform="rotate(15 120 50)" />
+                    <rect x="111" y="20" width="18" height="60" rx="3" transform="rotate(75 120 50)" />
+                    <rect x="111" y="20" width="18" height="60" rx="3" transform="rotate(135 120 50)" />
+                    <circle cx="120" cy="50" r="22" />
+                    <!-- Lỗ khoét rỗng giữa bánh xanh -->
+                    <circle cx="120" cy="50" r="8" fill="var(--splash-bg)" />
                 </g>
             </svg>
             <span class="splash-text">System Core Active</span>
@@ -274,7 +272,7 @@
             
             <ul class="nav-links" id="nav-menu">
                 <li><a data-target="hardware">Hardware & Low-Level</a></li>
-                <li><a data-target="malware">Malware Dev</a></li>
+                <li><a data-target="malware">Malware Development</a></li>
                 <li><a data-target="contact">Contact</a></li>
             </ul>
             
@@ -286,7 +284,7 @@
         </div>
     </nav>
 
-    <!-- NỘI DUNG CHÍNH (Sẽ ẩn lúc mới vào trang) -->
+    <!-- NỘI DUNG CHÍNH -->
     <div id="main-content">
         <h1>Welcome to Alpha08-BNR Research Page</h1>
         <p>Low-Level Programming, Hardware Specialist, and Malware Developer.</p>
@@ -326,13 +324,11 @@
         const cards = document.querySelectorAll('.card');
         const themeBtn = document.getElementById('theme-btn');
 
-        // Mở menu 3 gạch
         hamburgerBtn.addEventListener('click', () => {
             navMenu.classList.toggle('active');
             hamburgerBtn.classList.toggle('open');
         });
 
-        // Click chọn chủ đề để ẩn bánh răng và hiện nội dung
         menuLinks.forEach(link => {
             link.addEventListener('click', () => {
                 const targetId = link.getAttribute('data-target');
@@ -351,7 +347,6 @@
             });
         });
 
-        // Nút đổi màu giao diện
         themeBtn.addEventListener('click', () => {
             const currentTheme = document.documentElement.getAttribute('data-theme');
             if (currentTheme === 'dark') {
