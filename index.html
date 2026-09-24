@@ -66,25 +66,24 @@
         }
 
         .gear-icon {
-            width: 300px;
-            height: 300px;
-            /* Tạo hiệu ứng phát sáng cho toàn bộ cụm bánh răng */
-            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.4));
+            width: 180px;
+            height: 180px;
+            filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.4));
         }
 
-        /* Bánh ngoài màu đỏ trong suốt & phát sáng */
+        /* Bánh răng ngoài: Màu đỏ trong suốt, phát sáng, quay theo chiều kim đồng hồ */
         .gear-outer-group {
-            transform-origin: 35% 50%;
+            transform-origin: 50% 50%;
             animation: spin-cw 4s linear infinite;
-            fill: rgba(231, 76, 60, 0.75); /* Đỏ trong suốt */
+            fill: rgba(231, 76, 60, 0.75);
             filter: drop-shadow(0 0 8px rgba(231, 76, 60, 0.8));
         }
 
-        /* Bánh trong màu xanh dương trong suốt & phát sáng, cách xa bánh ngoài */
+        /* Bánh răng trong: Màu xanh dương trong suốt, nhỏ hơn, có khoảng hở, quay ngược chiều */
         .gear-inner-group {
-            transform-origin: 75% 50%;
-            animation: spin-ccw 1s linear infinite;
-            fill: rgba(52, 152, 219, 0.75); /* Xanh trong suốt */
+            transform-origin: 50% 50%;
+            animation: spin-ccw 3s linear infinite;
+            fill: rgba(52, 152, 219, 0.75);
             filter: drop-shadow(0 0 8px rgba(52, 152, 219, 0.8));
         }
 
@@ -236,28 +235,28 @@
 </head>
 <body>
 
-    <!-- Màn hình 2 bánh răng trong suốt phát sáng, cách xa nhau -->
+    <!-- Màn hình 2 bánh răng lồng nhau đồng tâm, có khoảng hở, trong suốt phát sáng -->
     <div id="splash-screen">
         <div class="gear-container">
-            <svg class="gear-icon" viewBox="0 0 160 100">
-                <!-- BÁNH RĂNG BÊN NGOÀI (MÀU ĐỎ TRONG SUỐT - TÂM Ở X=35, Y=50) -->
+            <svg class="gear-icon" viewBox="0 0 100 100">
+                <!-- BÁNH RĂNG NGOÀI (MÀU ĐỎ - TO HƠN) -->
                 <g class="gear-outer-group">
-                    <rect x="25" y="5" width="20" height="90" rx="4" transform="rotate(0 35 50)" />
-                    <rect x="25" y="5" width="20" height="90" rx="4" transform="rotate(60 35 50)" />
-                    <rect x="25" y="5" width="20" height="90" rx="4" transform="rotate(120 35 50)" />
-                    <circle cx="35" cy="50" r="32" />
-                    <!-- Lỗ khoét rỗng giữa bánh đỏ -->
-                    <circle cx="35" cy="50" r="16" fill="var(--splash-bg)" />
+                    <rect x="42" y="3" width="16" height="94" rx="3" transform="rotate(0 50 50)" />
+                    <rect x="42" y="3" width="16" height="94" rx="3" transform="rotate(60 50 50)" />
+                    <rect x="42" y="3" width="16" height="94" rx="3" transform="rotate(120 50 50)" />
+                    <circle cx="50" cy="50" r="38" />
+                    <!-- Lỗ khoét rỗng bên trong bánh đỏ để lồng bánh xanh vào -->
+                    <circle cx="50" cy="50" r="26" fill="var(--splash-bg)" />
                 </g>
 
-                <!-- BÁNH RĂNG BÊN TRONG (MÀU XANH DƯƠNG TRONG SUỐT - TÂM Ở X=120, Y=50) -->
+                <!-- BÁNH RĂNG TRONG (MÀU XANH DƯƠNG - NHỎ HƠN, CÓ KHE HỞ CÁCH BIỆT) -->
                 <g class="gear-inner-group">
-                    <rect x="111" y="20" width="18" height="60" rx="3" transform="rotate(15 120 50)" />
-                    <rect x="111" y="20" width="18" height="60" rx="3" transform="rotate(75 120 50)" />
-                    <rect x="111" y="20" width="18" height="60" rx="3" transform="rotate(135 120 50)" />
-                    <circle cx="120" cy="50" r="22" />
-                    <!-- Lỗ khoét rỗng giữa bánh xanh -->
-                    <circle cx="120" cy="50" r="8" fill="var(--splash-bg)" />
+                    <rect x="45" y="20" width="10" height="60" rx="2" transform="rotate(15 50 50)" />
+                    <rect x="45" y="20" width="10" height="60" rx="2" transform="rotate(75 50 50)" />
+                    <rect x="45" y="20" width="10" height="60" rx="2" transform="rotate(135 50 50)" />
+                    <circle cx="50" cy="50" r="20" />
+                    <!-- Lỗ trục rỗng ở tâm bánh trong -->
+                    <circle cx="50" cy="50" r="8" fill="var(--splash-bg)" />
                 </g>
             </svg>
             <span class="splash-text">System Core Active</span>
@@ -272,7 +271,7 @@
             
             <ul class="nav-links" id="nav-menu">
                 <li><a data-target="hardware">Hardware & Low-Level</a></li>
-                <li><a data-target="malware">Malware Development</a></li>
+                <li><a data-target="malware">Malware Dev</a></li>
                 <li><a data-target="contact">Contact</a></li>
             </ul>
             
