@@ -25,6 +25,8 @@
             --toggle-btn-text: #ffffff;
             --gear-color: #000000;
             --splash-bg: #f6f8fa;
+            --btn-sub-bg: #f0f6fc;
+            --btn-sub-border: #d0d7de;
         }
 
         [data-theme="dark"] {
@@ -41,6 +43,8 @@
             --toggle-btn-text: #24292f;
             --gear-color: #ffffff;
             --splash-bg: #0d1117;
+            --btn-sub-bg: #21262d;
+            --btn-sub-border: #30363d;
         }
 
         /* === MÀN HÌNH ĐỘNG BÁNH RĂNG === */
@@ -71,7 +75,6 @@
             filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.4));
         }
 
-        /* Bánh răng ngoài: Đỏ trong suốt, phát sáng, quay chiều kim đồng hồ */
         .gear-outer-group {
             transform-origin: 50% 50%;
             animation: spin-cw 8s linear infinite;
@@ -79,7 +82,6 @@
             filter: drop-shadow(0 0 8px rgba(231, 76, 60, 0.8));
         }
 
-        /* Bánh răng trong: Xanh dương trong suốt, nhỏ hơn, quay ngược chiều */
         .gear-inner-group {
             transform-origin: 50% 50%;
             animation: spin-ccw 1s linear infinite;
@@ -150,6 +152,60 @@
             padding: 2px 6px;
             border-radius: 4px;
             font-family: monospace;
+        }
+
+        /* === DANH SÁCH BÀI VIẾT CON & NÚT QUAY LẠI === */
+        .sub-menu-list {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0 0 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .sub-menu-btn {
+            background-color: var(--btn-sub-bg);
+            border: 1px solid var(--btn-sub-border);
+            color: var(--text-link);
+            padding: 10px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 0.95rem;
+            font-weight: 500;
+            width: 100%;
+            transition: all 0.2s;
+        }
+
+        .sub-menu-btn:hover {
+            border-color: var(--text-link);
+            background-color: var(--border-color);
+        }
+
+        .article-view {
+            display: none;
+            margin-top: 15px;
+        }
+
+        .article-view.active {
+            display: block;
+        }
+
+        .back-to-list-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+            transition: background 0.2s;
+        }
+
+        .back-to-list-btn:hover {
+            background-color: var(--border-color);
         }
 
         /* === THANH ĐIỀU HƯỚNG (NAVBAR) === */
@@ -235,25 +291,21 @@
 </head>
 <body>
 
-    <!-- Màn hình 2 bánh răng lồng nhau, trong suốt thật sự bằng SVG Mask -->
+    <!-- Màn hình 2 bánh răng lồng nhau -->
     <div id="splash-screen">
         <div class="gear-container">
             <svg class="gear-icon" viewBox="0 0 100 100">
                 <defs>
-                    <!-- Mặt nạ đục lỗ cho bánh ngoài (Khoét vòng tròn tâm r=26) -->
                     <mask id="outer-mask">
                         <rect width="100" height="100" fill="white" />
                         <circle cx="50" cy="50" r="26" fill="black" />
                     </mask>
-
-                    <!-- Mặt nạ đục lỗ cho bánh trong (Khoét trục tâm r=8) -->
                     <mask id="inner-mask">
                         <rect width="100" height="100" fill="white" />
                         <circle cx="50" cy="50" r="8" fill="black" />
                     </mask>
                 </defs>
 
-                <!-- BÁNH RĂNG NGOÀI-->
                 <g class="gear-outer-group" mask="url(#outer-mask)">
                     <rect x="42" y="3" width="16" height="94" rx="3" transform="rotate(0 50 50)" />
                     <rect x="42" y="3" width="16" height="94" rx="3" transform="rotate(60 50 50)" />
@@ -261,7 +313,6 @@
                     <circle cx="50" cy="50" r="38" />
                 </g>
 
-                <!-- BÁNH RĂNG TRONG -->
                 <g class="gear-inner-group" mask="url(#inner-mask)">
                     <rect x="45" y="27" width="10" height="46" rx="2" transform="rotate(15 50 50)" />
                     <rect x="45" y="27" width="10" height="46" rx="2" transform="rotate(75 50 50)" />
@@ -299,23 +350,63 @@
         <p>Low-Level Programming, Hardware Specialist, and Malware Developer.</p>
         <p><em>A place to store my nonsense.</em></p>
 
+        <!-- PHẦN 1: HARDWARE & LOW-LEVEL -->
         <div class="card" id="hardware">
             <h2>1. Hardware & Low-Level Programming</h2>
-            <ul>
-                <li>Research on memory protection mechanisms for SMM Drivers in the DXE phase prior to OS boot.</li>
-                <li>Forcing cache execution via ASM instructions <code>cld</code> and <code>wbinvd</code>.</li>
-                <li>Explore public source code repositories on GitHub: <a href="https://github.com" target="_blank">://github.com</a></li>
-            </ul>
+            
+            <!-- Danh sách các bài viết con (Menu lựa chọn) -->
+            <div class="sub-menu-container active">
+                <p>Chọn chủ đề nghiên cứu bên dưới:</p>
+                <ul class="sub-menu-list">
+                    <li><button class="sub-menu-btn" data-article="hw-art-1">🔹 SMM Drivers & Memory Protection Mechanisms in DXE Phase</button></li>
+                    <li><button class="sub-menu-btn" data-article="hw-art-2">🔹 Forcing Cache Execution via ASM (cld & wbinvd)</button></li>
+                </ul>
+            </div>
+
+            <!-- Bài viết 1 -->
+            <div class="article-view" id="hw-art-1">
+                <button class="back-to-list-btn">← Quay lại danh sách</button>
+                <h3>SMM Drivers & Memory Protection in DXE Phase</h3>
+                <p>Research on memory protection mechanisms for SMM Drivers in the DXE phase prior to OS boot. Deep-dive into SMRAM protection configuration and SMI handler safety.</p>
+                <ul>
+                    <li>Configuring SMM Code Access Sanity Check.</li>
+                    <li>Preventing unauthorized communication channels before OS transition.</li>
+                </ul>
+            </div>
+
+            <!-- Bài viết 2 -->
+            <div class="article-view" id="hw-art-2">
+                <button class="back-to-list-btn">← Quay lại danh sách</button>
+                <h3>Forcing Cache Execution via ASM</h3>
+                <p>Detailed breakdown of forcing cache execution using assembly instructions like <code>cld</code> and <code>wbinvd</code> for hardware level manipulation.</p>
+            </div>
         </div>
 
+        <!-- PHẦN 2: MALWARE DEVELOPMENT -->
         <div class="card" id="malware">
             <h2>2. Malware Development (Malware Dev)</h2>
-            <ul>
-                <li>Technical analysis of an advanced EDR evasion chain combining <strong>Indirect Syscall + Halo's Gate + Fake Ret</strong> (Fake Return Address to spoof the Call Stack).</li>
-                <li>Follow the official Facebook Page for technical updates: <a href="https://facebook.com" target="_blank">Facebook Page</a></li>
-            </ul>
+            
+            <!-- Danh sách các bài viết con -->
+            <div class="sub-menu-container active">
+                <p>Chọn tài liệu nghiên cứu bên dưới:</p>
+                <ul class="sub-menu-list">
+                    <li><button class="sub-menu-btn" data-article="mw-art-1">🔹 Advanced EDR Evasion: Indirect Syscall + Halo's Gate + Fake Ret</button></li>
+                </ul>
+            </div>
+
+            <!-- Bài viết 1 -->
+            <div class="article-view" id="mw-art-1">
+                <button class="back-to-list-btn">← Quay lại danh sách</button>
+                <h3>Advanced EDR Evasion Chain</h3>
+                <p>Technical analysis of an advanced EDR evasion chain combining <strong>Indirect Syscall + Halo's Gate + Fake Ret</strong> (Fake Return Address to spoof the Call Stack).</p>
+                <ul>
+                    <li>Bypassing user-mode API hooking effortlessly.</li>
+                    <li>Restoring stack frames to thwart automated memory scanners.</li>
+                </ul>
+            </div>
         </div>
 
+        <!-- PHẦN 3: CONTACT -->
         <div class="card" id="contact">
             <h2>3. Contact & Collaboration</h2>
             <p>For research collaboration or technical peer review, please contact via the official LinkedIn profile: 
@@ -333,11 +424,13 @@
         const cards = document.querySelectorAll('.card');
         const themeBtn = document.getElementById('theme-btn');
 
+        // Bật/tắt menu mobile 3 gạch
         hamburgerBtn.addEventListener('click', () => {
             navMenu.classList.toggle('active');
             hamburgerBtn.classList.toggle('open');
         });
 
+        // Xử lý chuyển đổi qua lại giữa các danh mục lớn trên navbar
         menuLinks.forEach(link => {
             link.addEventListener('click', () => {
                 const targetId = link.getAttribute('data-target');
@@ -345,7 +438,15 @@
                 splashScreen.style.display = 'none';
                 mainContent.style.display = 'block';
 
-                cards.forEach(card => card.classList.remove('active-section'));
+                cards.forEach(card => {
+                    card.classList.remove('active-section');
+                    // Reset lại trạng thái: ẩn bài viết, hiện lại menu con khi đổi danh mục
+                    const subMenu = card.querySelector('.sub-menu-container');
+                    const articles = card.querySelectorAll('.article-view');
+                    if (subMenu) subMenu.style.display = 'block';
+                    articles.forEach(art => art.classList.remove('active'));
+                });
+
                 const targetCard = document.getElementById(targetId);
                 if (targetCard) {
                     targetCard.classList.add('active-section');
@@ -356,6 +457,35 @@
             });
         });
 
+        // Xử lý bấm vào tên bài viết con để hiển thị nội dung chi tiết
+        document.querySelectorAll('.sub-menu-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const articleId = btn.getAttribute('data-article');
+                const card = btn.closest('.card');
+                
+                // Ẩn danh sách menu con
+                card.querySelector('.sub-menu-container').style.display = 'none';
+                
+                // Hiện bài viết được chọn
+                card.querySelectorAll('.article-view').forEach(art => art.classList.remove('active'));
+                document.getElementById(articleId).classList.add('active');
+            });
+        });
+
+        // Xử lý nút quay lại danh sách
+        document.querySelectorAll('.back-to-list-btn').forEach(backBtn => {
+            backBtn.addEventListener('click', () => {
+                const card = backBtn.closest('.card');
+                
+                // Ẩn bài viết chi tiết
+                card.querySelectorAll('.article-view').forEach(art => art.classList.remove('active'));
+                
+                // Hiện lại danh sách menu con
+                card.querySelector('.sub-menu-container').style.display = 'block';
+            });
+        });
+
+        // Xử lý đổi theme sáng/tối
         themeBtn.addEventListener('click', () => {
             const currentTheme = document.documentElement.getAttribute('data-theme');
             if (currentTheme === 'dark') {
