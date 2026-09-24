@@ -39,7 +39,7 @@
             top: 0;
             left: 0;
             width: 100%;
-            background-color: rgba(11, 15, 25, 0.85);
+            background-color: rgba(11, 15, 25, 0.9);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border-color);
             z-index: 1000;
@@ -72,6 +72,7 @@
             display: flex;
             gap: 2rem;
             list-style: none;
+            align-items: center;
         }
 
         .nav-links a {
@@ -88,16 +89,39 @@
         .cta-btn {
             background-color: var(--primary-color);
             color: white;
-            padding: 0.6rem 1.2rem;
+            padding: 0.5rem 1rem;
             border-radius: 6px;
             text-decoration: none;
             font-weight: 600;
+            font-size: 0.9rem;
             transition: var(--transition);
+            white-space: nowrap;
         }
 
         .cta-btn:hover {
             background-color: var(--primary-hover);
             transform: translateY(-1px);
+        }
+
+        /* Hamburger Menu Icon */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            z-index: 1100;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background-color: var(--text-main);
+            border-radius: 2px;
+            transition: var(--transition);
         }
 
         /* Hero Section */
@@ -130,16 +154,18 @@
         .hero-actions {
             display: flex;
             gap: 1rem;
+            flex-wrap: wrap;
         }
 
         .secondary-btn {
             background-color: transparent;
             color: var(--text-main);
             border: 1px solid var(--border-color);
-            padding: 0.6rem 1.2rem;
+            padding: 0.5rem 1rem;
             border-radius: 6px;
             text-decoration: none;
             font-weight: 600;
+            font-size: 0.9rem;
             transition: var(--transition);
         }
 
@@ -335,20 +361,50 @@
             font-size: 0.9rem;
         }
 
+        /* Responsive Mobile Styles */
         @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background-color: var(--surface-color);
+                flex-direction: column;
+                align-items: center;
+                padding: 2rem 0;
+                border-bottom: 1px solid var(--border-color);
+                clip-path: circle(0% at top right);
+                transition: clip-path 0.4s ease-in-out;
+                pointer-events: none;
+            }
+
+            .nav-links.active {
+                clip-path: circle(150% at top right);
+                pointer-events: auto;
+            }
+
             .hero {
                 grid-template-columns: 1fr;
                 padding-top: 8rem;
             }
+
             .features-grid, .resources-grid {
                 grid-template-columns: 1fr;
             }
-            .nav-links {
-                display: none;
-            }
+
             .footer-content {
                 flex-direction: column;
                 gap: 1.5rem;
+            }
+
+            /* Nút Documentation đã thu nhỏ gọn hơn trên di động */
+            .cta-btn {
+                padding: 0.35rem 0.75rem;
+                font-size: 0.8rem;
             }
         }
     </style>
@@ -358,14 +414,19 @@
     <!-- Navigation Header -->
     <header>
         <div class="nav-container">
-            <a href="#" class="logo">Nexus<span>Architecture</span></a>
-            <ul class="nav-links">
+            <a href="#" class="logo">Nexus<span>Core</span></a>
+            <button class="hamburger" id="hamburger" aria-label="Toggle Navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links" id="navLinks">
                 <li><a href="#architecture">Architecture</a></li>
                 <li><a href="#performance">Performance</a></li>
                 <li><a href="#specifications">Specifications</a></li>
-                <li><a href="#resources">Resources</a></li>
+                <li><a href="#resources">Repositories</a></li>
+                <li><a href="#resources" class="cta-btn">Documentation</a></li>
             </ul>
-            <a href="#resources" class="cta-btn">Access Documentation</a>
         </div>
     </header>
 
@@ -423,22 +484,44 @@
         </div>
     </section>
 
-    <!-- Resources & Thematic Links Section -->
+    <!-- Resources & Repositories Section -->
     <section id="resources" class="resources">
         <div class="section-header">
-            <h2>Technical Documentation & External Links</h2>
-            <p>Direct references to official specifications, low-level architecture documentation, and system resources.</p>
+            <h2>Repositories & Technical Documentation</h2>
+            <p>Direct references to official GitHub repositories, low-level architecture documentation, and system resources.</p>
         </div>
         <div class="resources-grid">
-            <!-- Category 1: Assembly & Low-Level Architecture -->
+            <!-- Ngăn 1: Alpha08-BNR Repositories -->
             <div class="resource-category">
-                <h3>Assembly & Binary Systems</h3>
+                <h3>Alpha08-BNR Source Repositories</h3>
                 <ul class="resource-list">
                     <li>
-                        <a href="https://en.wikipedia.org/wiki/Assembly_language" target="_blank" rel="noopener">
-                            Assembly Language Foundations <span>Wikipedia</span>
+                        <a href="https://github.com/Alpha08-BNR?tab=repositories" target="_blank" rel="noopener">
+                            All Repositories Profile <span>GitHub</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="https://github.com/Alpha08-BNR/Driver-SMM-lock-0x3a-DXC" target="_blank" rel="noopener">
+                            Driver SMM Lock 0x3a DXC <span>SMM Module</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/Alpha08-BNR/Driver-SMM-lock-Ram" target="_blank" rel="noopener">
+                            Driver SMM Lock RAM <span>Hardware Driver</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/Alpha08-BNR/indirect-syscall-halo-gate-fakeret" target="_blank" rel="noopener">
+                            Indirect Syscall Halo Gate Fakeret <span>Syscall Evasion</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Ngăn 2: Systems Programming & Standards -->
+            <div class="resource-category">
+                <h3>Systems Programming & Standards</h3>
+                <ul class="resource-list">
                     <li>
                         <a href="https://www.felixcloutier.com/x86/" target="_blank" rel="noopener">
                             x86/x64 Instruction Reference Manual <span>Felix Cloutier</span>
@@ -450,18 +533,6 @@
                         </a>
                     </li>
                     <li>
-                        <a href="https://github.com/topics/assembly" target="_blank" rel="noopener">
-                            Assembly Systems Repositories <span>GitHub Topics</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- Category 2: Systems Programming & Performance -->
-            <div class="resource-category">
-                <h3>Memory Management & Systems</h3>
-                <ul class="resource-list">
-                    <li>
                         <a href="https://www.kernel.org/doc/html/latest/" target="_blank" rel="noopener">
                             Linux Kernel Architecture Documentation <span>Kernel.org</span>
                         </a>
@@ -469,16 +540,6 @@
                     <li>
                         <a href="https://godbolt.org/" target="_blank" rel="noopener">
                             Compiler Explorer Assembly Analysis <span>Godbolt</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://en.wikipedia.org/wiki/Memory_management" target="_blank" rel="noopener">
-                            Pointer Arithmetic & Allocation Concepts <span>Wikipedia</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://www.nasm.us/docs.php" target="_blank" rel="noopener">
-                            NASM Assembler Official Documentation <span>NASM Documentation</span>
                         </a>
                     </li>
                 </ul>
@@ -489,16 +550,31 @@
     <!-- Footer -->
     <footer>
         <div class="footer-content">
-            <a href="#" class="logo">Nexus<span>Architecture</span></a>
+            <a href="#" class="logo">Nexus<span>Core</span></a>
             <ul class="footer-links">
                 <li><a href="#architecture">Architecture</a></li>
                 <li><a href="#specifications">Specs</a></li>
-                <li><a href="#resources">Documentation</a></li>
+                <li><a href="#resources">Repositories</a></li>
             </ul>
         </div>
         <p class="copyright">&copy; 2026 Nexus Systems Architecture. All source code and documentation written in English.</p>
     </footer>
 
+    <script>
+        // Hamburger Menu Toggle for Mobile
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Close menu when clicking a link on mobile
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+    </script>
 </body>
-        </html>
-        
+</html>
