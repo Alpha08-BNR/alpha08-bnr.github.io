@@ -10,7 +10,7 @@
 
     <title>Alpha08-BNR | Low-Level, Hardware & Malware Research</title>
     <style>
-        /* === BẢNG MÀU BIẾN SỐ (VARIABLES) === */
+        /* === BẢNG MÀU BIẾN SỐ === */
         :root {
             --bg-body: #f6f8fa;
             --bg-navbar: #ffffff;
@@ -23,7 +23,7 @@
             --text-code: #cf222e;
             --toggle-btn-bg: #24292f;
             --toggle-btn-text: #ffffff;
-            --gear-color: #24292f; 
+            --gear-color: #000000; /* Nền sáng -> bánh răng & 3 gạch màu ĐEN */
             --splash-bg: #f6f8fa;
         }
 
@@ -39,11 +39,11 @@
             --text-code: #ff7b72;
             --toggle-btn-bg: #f0f6fc;
             --toggle-btn-text: #24292f;
-            --gear-color: #f0f6fc; 
+            --gear-color: #ffffff; /* Nền tối -> bánh răng & 3 gạch màu TRẮNG */
             --splash-bg: #0d1117;
         }
 
-        /* === MÀN HÌNH ĐỘNG (SPLASH SCREEN - CỐ ĐỊNH, ẤN KO ĐỔI) === */
+        /* === MÀN HÌNH ĐỘNG BÁNH RĂNG === */
         #splash-screen {
             position: fixed;
             top: 0;
@@ -54,7 +54,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 9999;
+            z-index: 10; /* Z-index thấp hơn thanh navbar để không che dấu 3 gạch */
             transition: background-color 0.3s;
         }
 
@@ -86,10 +86,8 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* === CẤU TRÚC GIAO DIỆN === */
-        html {
-            scroll-behavior: smooth;
-        }
+        /* === CẤU TRÚC GIAO DIỆN CHÍNH === */
+        html { scroll-behavior: smooth; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             line-height: 1.6;
@@ -100,17 +98,16 @@
             color: var(--text-main);
             transition: background-color 0.3s, color 0.3s;
         }
-        h1, h2 { 
-            color: var(--text-heading); 
-            border-bottom: 1px solid var(--border-color); 
-            padding-bottom: 8px; 
-            transition: color 0.3s, border-color 0.3s;
+
+        /* Chứa tất cả nội dung (ẩn đi lúc mới vào trang) */
+        #main-content {
+            display: none; 
+            position: relative;
+            z-index: 20;
         }
-        a { 
-            color: var(--text-link); 
-            text-decoration: none; 
-            transition: color 0.3s;
-        }
+
+        h1, h2 { color: var(--text-heading); border-bottom: 1px solid var(--border-color); padding-bottom: 8px; }
+        a { color: var(--text-link); text-decoration: none; }
         a:hover { text-decoration: underline; }
         
         .card {
@@ -119,12 +116,12 @@
             padding: 18px;
             border-radius: 8px;
             margin-bottom: 20px;
-            display: none; /* Mặc định ẩn các chủ đề, chỉ hiện khi chọn ở menu */
+            display: none; /* Mặc định ẩn các chủ đề */
             transition: background-color 0.3s, border-color 0.3s;
         }
         
         .card.active-section {
-            display: block; /* Hiện thị chủ đề được chọn */
+            display: block; /* Hiện thị khi click trong menu */
         }
 
         code {
@@ -133,10 +130,9 @@
             padding: 2px 6px;
             border-radius: 4px;
             font-family: monospace;
-            transition: background-color 0.3s, color 0.3s;
         }
 
-        /* === PHẦN THANH ĐIỀU HƯỚNG (NAVBAR) === */
+        /* === THANH ĐIỀU HƯỚNG (NAVBAR) === */
         .navbar {
             position: fixed;
             top: 0;
@@ -148,41 +144,39 @@
             justify-content: space-between;
             align-items: center;
             padding: 12px 20px;
-            z-index: 1000;
+            z-index: 1000; /* Luôn nổi lên trên cùng */
             transition: background-color 0.3s, border-color 0.3s;
         }
-        .nav-logo {
-            font-weight: bold;
-            color: var(--text-heading);
-            font-size: 1.1rem;
-            transition: color 0.3s;
-        }
-        
-        .nav-actions {
-            display: flex;
-            align-items: center;
-        }
+        .nav-logo { font-weight: bold; color: var(--text-heading); font-size: 1.1rem; }
+        .nav-actions { display: flex; align-items: center; position: relative; }
 
+        /* Menu dạng Dropdown xổ xuống */
         .nav-links {
-            display: flex;
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            top: 45px;
+            right: 0;
+            background-color: var(--bg-navbar);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 10px 20px;
+            min-width: 180px;
             list-style: none;
             margin: 0;
-            padding: 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        .nav-links li {
-            margin-right: 20px;
-        }
+        .nav-links.active { display: flex; }
+        .nav-links li { margin: 10px 0; }
         .nav-links a {
             color: var(--text-main);
             font-size: 0.95rem;
             font-weight: 500;
             cursor: pointer;
+            display: block;
             transition: color 0.2s;
         }
-        .nav-links a:hover {
-            color: var(--text-link);
-            text-decoration: none;
-        }
+        .nav-links a:hover { color: var(--text-link); }
 
         .theme-toggle-btn {
             background-color: var(--toggle-btn-bg);
@@ -193,15 +187,15 @@
             cursor: pointer;
             font-size: 0.85rem;
             font-weight: 600;
-            transition: background-color 0.3s, color 0.3s;
             margin-right: 15px;
         }
 
+        /* === NÚT 3 GẠCH (Luôn hiện trên mọi thiết bị) === */
         .menu-toggle {
-            display: none;
+            display: flex;
             flex-direction: column;
             justify-content: space-between;
-            width: 22px;
+            width: 24px;
             height: 18px;
             background: transparent;
             border: none;
@@ -209,49 +203,20 @@
             padding: 0;
         }
         .menu-toggle .bar {
-            height: 2px;
+            height: 3px;
             width: 100%;
-            background-color: var(--text-main);
+            background-color: var(--gear-color); /* Màu nghịch với nền */
+            border-radius: 2px;
             transition: all 0.3s ease;
         }
-
-        @media (max-width: 768px) {
-            .menu-toggle {
-                display: flex;
-            }
-            .nav-links {
-                display: none;
-                flex-direction: column;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                background-color: var(--bg-navbar);
-                border-bottom: 1px solid var(--border-color);
-                padding: 10px 20px;
-            }
-            .nav-links li {
-                margin: 10px 0;
-                margin-right: 0;
-            }
-            .nav-links.active {
-                display: flex;
-            }
-            .menu-toggle.open .bar:nth-child(1) {
-                transform: translateY(8px) rotate(45deg);
-            }
-            .menu-toggle.open .bar:nth-child(2) {
-                opacity: 0;
-            }
-            .menu-toggle.open .bar:nth-child(3) {
-                transform: translateY(-8px) rotate(-45deg);
-            }
-        }
+        .menu-toggle.open .bar:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+        .menu-toggle.open .bar:nth-child(2) { opacity: 0; }
+        .menu-toggle.open .bar:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
     </style>
 </head>
 <body>
 
-    <!-- Màn hình động bánh răng (Cố định, bấm vào ko thay đổi) -->
+    <!-- Màn hình bánh răng (Chờ click vào Menu mới ẩn đi) -->
     <div id="splash-screen">
         <div class="gear-container">
             <svg class="gear-icon" viewBox="0 0 24 24">
@@ -282,74 +247,78 @@
         </div>
     </nav>
 
-    <h1>Welcome to Alpha08-BNR Research Page</h1>
-    <p>Low-Level Programming, Hardware Specialist, and Malware Developer.</p>
-    <p><em>Nơi đây lưu trữ các thứ nhảm nhí của tôi</em></p>
-    <p>Hãy chọn chủ đề từ menu (biểu tượng 3 gạch) bên trên để xem chi tiết.</p>
+    <!-- NỘI DUNG CHÍNH (Sẽ ẩn lúc mới vào trang) -->
+    <div id="main-content">
+        <h1>Welcome to Alpha08-BNR Research Page</h1>
+        <p>Low-Level Programming, Hardware Specialist, and Malware Developer.</p>
+        <p><em>Nơi đây lưu trữ các thứ nhảm nhí của tôi</em></p>
 
-    <div class="card" id="hardware">
-        <h2>1. Hardware & Low-Level Programming</h2>
-        <ul>
-            <li>Research on memory protection mechanisms for SMM Drivers in the DXE phase prior to OS boot.</li>
-            <li>Forcing cache execution via ASM instructions <code>cld</code> and <code>wbinvd</code>.</li>
-            <li>Explore public source code repositories on GitHub: <a href="https://github.com" target="_blank">://github.com</a></li>
-        </ul>
-    </div>
+        <div class="card" id="hardware">
+            <h2>1. Hardware & Low-Level Programming</h2>
+            <ul>
+                <li>Research on memory protection mechanisms for SMM Drivers in the DXE phase prior to OS boot.</li>
+                <li>Forcing cache execution via ASM instructions <code>cld</code> and <code>wbinvd</code>.</li>
+                <li>Explore public source code repositories on GitHub: <a href="https://github.com" target="_blank">://github.com</a></li>
+            </ul>
+        </div>
 
-    <div class="card" id="malware">
-        <h2>2. Malware Development (Malware Dev)</h2>
-        <ul>
-            <li>Technical analysis of an advanced EDR evasion chain combining <strong>Indirect Syscall + Halo's Gate + Fake Ret</strong> (Fake Return Address to spoof the Call Stack).</li>
-            <li>Follow the official Facebook Page for technical updates: <a href="https://facebook.com" target="_blank">Facebook Page</a></li>
-        </ul>
-    </div>
+        <div class="card" id="malware">
+            <h2>2. Malware Development (Malware Dev)</h2>
+            <ul>
+                <li>Technical analysis of an advanced EDR evasion chain combining <strong>Indirect Syscall + Halo's Gate + Fake Ret</strong> (Fake Return Address to spoof the Call Stack).</li>
+                <li>Follow the official Facebook Page for technical updates: <a href="https://facebook.com" target="_blank">Facebook Page</a></li>
+            </ul>
+        </div>
 
-    <div class="card" id="contact">
-        <h2>3. Contact & Collaboration</h2>
-        <p>For research collaboration or technical peer review, please contact via the official LinkedIn profile: 
-            <a href="https://linkedin.com" target="_blank">://linkedin.com</a>
-        </p>
+        <div class="card" id="contact">
+            <h2>3. Contact & Collaboration</h2>
+            <p>For research collaboration or technical peer review, please contact via the official LinkedIn profile: 
+                <a href="https://linkedin.com" target="_blank">://linkedin.com</a>
+            </p>
+        </div>
     </div>
 
     <script>
-        // --- 1. Xử lý đóng mở Menu 3 gạch ---
+        // Các biến cần dùng
         const hamburgerBtn = document.getElementById('hamburger-btn');
         const navMenu = document.getElementById('nav-menu');
         const menuLinks = document.querySelectorAll('.nav-links a');
+        const splashScreen = document.getElementById('splash-screen');
+        const mainContent = document.getElementById('main-content');
+        const cards = document.querySelectorAll('.card');
+        const themeBtn = document.getElementById('theme-btn');
 
+        // 1. Đóng/Mở menu 3 gạch
         hamburgerBtn.addEventListener('click', () => {
             navMenu.classList.toggle('active');
             hamburgerBtn.classList.toggle('open');
         });
 
-        // --- 2. Xử lý chuyển đổi hiển thị nội dung các chủ đề từ menu ---
-        const cards = document.querySelectorAll('.card');
-
+        // 2. Chuyển chủ đề & Tắt bánh răng
         menuLinks.forEach(link => {
             link.addEventListener('click', () => {
                 const targetId = link.getAttribute('data-target');
 
-                // Ẩn tất cả các card trước
-                cards.forEach(card => card.classList.remove('active-section'));
+                // Ẩn bánh răng và hiện toàn bộ khối nội dung chính
+                splashScreen.style.display = 'none';
+                mainContent.style.display = 'block';
 
-                // Hiển thị card được chọn
+                // Ẩn tất cả các card, sau đó chỉ hiện card được chọn
+                cards.forEach(card => card.classList.remove('active-section'));
                 const targetCard = document.getElementById(targetId);
                 if (targetCard) {
                     targetCard.classList.add('active-section');
                 }
 
-                // Đóng menu trên mobile sau khi chọn
+                // Tự động đóng menu sau khi chọn
                 navMenu.classList.remove('active');
                 hamburgerBtn.classList.remove('open');
             });
         });
 
-        // --- 3. Xử lý nút Đổi màu giao diện (Dark/Light Mode) ---
-        const themeBtn = document.getElementById('theme-btn');
-        
+        // 3. Xử lý nút đổi màu sáng/tối
         themeBtn.addEventListener('click', () => {
             const currentTheme = document.documentElement.getAttribute('data-theme');
-            
             if (currentTheme === 'dark') {
                 document.documentElement.removeAttribute('data-theme');
                 themeBtn.textContent = 'Đổi màu đen';
