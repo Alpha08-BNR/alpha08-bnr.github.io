@@ -12,7 +12,6 @@
     <style>
         /* === BẢNG MÀU BIẾN SỐ (VARIABLES) === */
         :root {
-            /* Giao diện sáng (Mặc định: Trắng - Xanh) */
             --bg-body: #f6f8fa;
             --bg-navbar: #ffffff;
             --bg-card: #ffffff;
@@ -24,12 +23,11 @@
             --text-code: #cf222e;
             --toggle-btn-bg: #24292f;
             --toggle-btn-text: #ffffff;
-            --gear-color: #24292f; /* Bánh răng màu đen khi nền sáng */
+            --gear-color: #24292f; 
             --splash-bg: #f6f8fa;
         }
 
         [data-theme="dark"] {
-            /* Giao diện tối (Khi bấm nút: Đen - Xanh) */
             --bg-body: #0d1117;
             --bg-navbar: #161b22;
             --bg-card: #161b22;
@@ -41,11 +39,11 @@
             --text-code: #ff7b72;
             --toggle-btn-bg: #f0f6fc;
             --toggle-btn-text: #24292f;
-            --gear-color: #f0f6fc; /* Bánh răng màu trắng khi nền tối */
+            --gear-color: #f0f6fc; 
             --splash-bg: #0d1117;
         }
 
-        /* === MÀN HÌNH ĐỘNG (SPLASH SCREEN) === */
+        /* === MÀN HÌNH ĐỘNG (SPLASH SCREEN - CỐ ĐỊNH, ẤN KO ĐỔI) === */
         #splash-screen {
             position: fixed;
             top: 0;
@@ -57,8 +55,7 @@
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            cursor: pointer;
-            transition: opacity 0.5s ease, background-color 0.3s;
+            transition: background-color 0.3s;
         }
 
         .gear-container {
@@ -122,9 +119,14 @@
             padding: 18px;
             border-radius: 8px;
             margin-bottom: 20px;
-            scroll-margin-top: 90px;
+            display: none; /* Mặc định ẩn các chủ đề, chỉ hiện khi chọn ở menu */
             transition: background-color 0.3s, border-color 0.3s;
         }
+        
+        .card.active-section {
+            display: block; /* Hiện thị chủ đề được chọn */
+        }
+
         code {
             background-color: var(--bg-code);
             color: var(--text-code);
@@ -156,7 +158,6 @@
             transition: color 0.3s;
         }
         
-        /* Cụm chức năng bên phải navbar */
         .nav-actions {
             display: flex;
             align-items: center;
@@ -175,6 +176,7 @@
             color: var(--text-main);
             font-size: 0.95rem;
             font-weight: 500;
+            cursor: pointer;
             transition: color 0.2s;
         }
         .nav-links a:hover {
@@ -182,7 +184,6 @@
             text-decoration: none;
         }
 
-        /* Nút đổi màu (Dark Mode Toggle) */
         .theme-toggle-btn {
             background-color: var(--toggle-btn-bg);
             color: var(--toggle-btn-text);
@@ -196,7 +197,6 @@
             margin-right: 15px;
         }
 
-        /* Nút 3 gạch trên điện thoại */
         .menu-toggle {
             display: none;
             flex-direction: column;
@@ -215,7 +215,6 @@
             transition: all 0.3s ease;
         }
 
-        /* Giao diện Responsive cho ĐIỆN THOẠI */
         @media (max-width: 768px) {
             .menu-toggle {
                 display: flex;
@@ -252,13 +251,13 @@
 </head>
 <body>
 
-    <!-- Màn hình động bánh răng (Splash Screen) -->
+    <!-- Màn hình động bánh răng (Cố định, bấm vào ko thay đổi) -->
     <div id="splash-screen">
         <div class="gear-container">
             <svg class="gear-icon" viewBox="0 0 24 24">
                 <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.97 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.97 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L15.44,17.95C15.96,18.34 16.5,18.68 17.13,18.93L17.5,21.58C17.54,21.82 17.75,22 18,22H22C22.25,22 22.46,21.82 22.5,21.58L22.87,18.93C23.5,18.68 24.04,18.34 24.56,17.95L27.05,18.95C27.27,19.03 27.54,18.95 27.66,18.73L29.66,15.27C29.79,15.05 29.73,14.78 29.54,14.63L19.43,12.97Z"></path>
             </svg>
-            <span class="splash-text">Click anywhere to enter</span>
+            <span class="splash-text">System Core Active</span>
         </div>
     </div>
 
@@ -270,9 +269,9 @@
             <button class="theme-toggle-btn" id="theme-btn">Đổi màu đen</button>
             
             <ul class="nav-links" id="nav-menu">
-                <li><a href="#hardware">Hardware & Low-Level</a></li>
-                <li><a href="#malware">Malware Dev</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a data-target="hardware">Hardware & Low-Level</a></li>
+                <li><a data-target="malware">Malware Dev</a></li>
+                <li><a data-target="contact">Contact</a></li>
             </ul>
             
             <button class="menu-toggle" id="hamburger-btn">
@@ -286,7 +285,7 @@
     <h1>Welcome to Alpha08-BNR Research Page</h1>
     <p>Low-Level Programming, Hardware Specialist, and Malware Developer.</p>
     <p><em>Nơi đây lưu trữ các thứ nhảm nhí của tôi</em></p>
-    <p>Below are the publicly shared projects and technical articles:</p>
+    <p>Hãy chọn chủ đề từ menu (biểu tượng 3 gạch) bên trên để xem chi tiết.</p>
 
     <div class="card" id="hardware">
         <h2>1. Hardware & Low-Level Programming</h2>
@@ -312,17 +311,7 @@
         </p>
     </div>
 
-    <!-- Script xử lý Đổi màu, Đóng mở Menu & Màn hình động -->
     <script>
-        // --- 0. Xử lý màn hình động (Splash Screen) ---
-        const splashScreen = document.getElementById('splash-screen');
-        splashScreen.addEventListener('click', () => {
-            splashScreen.style.opacity = '0';
-            setTimeout(() => {
-                splashScreen.style.display = 'none';
-            }, 500);
-        });
-
         // --- 1. Xử lý đóng mở Menu 3 gạch ---
         const hamburgerBtn = document.getElementById('hamburger-btn');
         const navMenu = document.getElementById('nav-menu');
@@ -333,14 +322,29 @@
             hamburgerBtn.classList.toggle('open');
         });
 
+        // --- 2. Xử lý chuyển đổi hiển thị nội dung các chủ đề từ menu ---
+        const cards = document.querySelectorAll('.card');
+
         menuLinks.forEach(link => {
             link.addEventListener('click', () => {
+                const targetId = link.getAttribute('data-target');
+
+                // Ẩn tất cả các card trước
+                cards.forEach(card => card.classList.remove('active-section'));
+
+                // Hiển thị card được chọn
+                const targetCard = document.getElementById(targetId);
+                if (targetCard) {
+                    targetCard.classList.add('active-section');
+                }
+
+                // Đóng menu trên mobile sau khi chọn
                 navMenu.classList.remove('active');
                 hamburgerBtn.classList.remove('open');
             });
         });
 
-        // --- 2. Xử lý nút Đổi màu giao diện (Dark/Light Mode) ---
+        // --- 3. Xử lý nút Đổi màu giao diện (Dark/Light Mode) ---
         const themeBtn = document.getElementById('theme-btn');
         
         themeBtn.addEventListener('click', () => {
@@ -357,4 +361,3 @@
     </script>
 </body>
 </html>
-
