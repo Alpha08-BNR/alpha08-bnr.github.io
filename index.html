@@ -3,499 +3,502 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- Google Search Console Verification Meta Tag -->
-    <meta name="google-site-verification" content="FXlZW23fm2WiPghro-SiD72ckrw1g890Ww7lNqX6-yk" />
-    <meta name="google-site-verification" content="6KAUU7rFVJ9ZUi3znJcyquz-_xZs_6AhGCY1m9-EM1s" />
-
-    <title>Alpha08-BNR | Low-Level, Hardware & Malware Research</title>
+    <title>Nexus Architecture - Systems & Low-Level Engineering</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        /* === BẢNG MÀU BIẾN SỐ === */
         :root {
-            --bg-body: #f6f8fa;
-            --bg-navbar: #ffffff;
-            --bg-card: #ffffff;
-            --border-color: #d0d7de;
-            --text-main: #24292f;
-            --text-link: #0969da;
-            --text-heading: #0969da;
-            --bg-code: #afb8c133;
-            --text-code: #cf222e;
-            --toggle-btn-bg: #24292f;
-            --toggle-btn-text: #ffffff;
-            --gear-color: #000000;
-            --splash-bg: #f6f8fa;
-            --btn-sub-bg: #f0f6fc;
-            --btn-sub-border: #d0d7de;
+            --bg-color: #0b0f19;
+            --surface-color: #111827;
+            --surface-card: #1f2937;
+            --primary-color: #3b82f6;
+            --primary-hover: #2563eb;
+            --accent-color: #10b981;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --border-color: #374151;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        [data-theme="dark"] {
-            --bg-body: #0d1117;
-            --bg-navbar: #161b22;
-            --bg-card: #161b22;
-            --border-color: #30363d;
-            --text-main: #c9d1d9;
-            --text-link: #58a6ff;
-            --text-heading: #58a6ff;
-            --bg-code: #11161d;
-            --text-code: #ff7b72;
-            --toggle-btn-bg: #f0f6fc;
-            --toggle-btn-text: #24292f;
-            --gear-color: #ffffff;
-            --splash-bg: #0d1117;
-            --btn-sub-bg: #21262d;
-            --btn-sub-border: #30363d;
-        }
-
-        /* === MÀN HÌNH ĐỘNG BÁNH RĂNG === */
-        #splash-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: var(--splash-bg);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10; 
-            transition: background-color 0.3s;
-        }
-
-        .gear-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .gear-icon {
-            width: 300px;
-            height: 300px;
-            filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.4));
-        }
-
-        .gear-outer-group {
-            transform-origin: 50% 50%;
-            animation: spin-cw 8s linear infinite;
-            fill: rgba(231, 76, 60, 0.75);
-            filter: drop-shadow(0 0 8px rgba(231, 76, 60, 0.8));
-        }
-
-        .gear-inner-group {
-            transform-origin: 50% 50%;
-            animation: spin-ccw 1s linear infinite;
-            fill: rgba(52, 152, 219, 0.75);
-            filter: drop-shadow(0 0 8px rgba(52, 152, 219, 0.8));
-        }
-
-        @keyframes spin-cw {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes spin-ccw {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(-360deg); }
-        }
-
-        .splash-text {
-            color: var(--gear-color);
-            font-size: 1.1rem;
-            font-family: monospace;
-            font-weight: bold;
-            opacity: 0.9;
-            transition: color 0.3s;
-            text-shadow: 0 0 10px rgba(0, 150, 255, 0.5);
-        }
-
-        /* === CẤU TRÚC GIAO DIỆN CHÍNH === */
-        html { scroll-behavior: smooth; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            line-height: 1.6;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 90px 20px 20px 20px;
-            background-color: var(--bg-body);
-            color: var(--text-main);
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        #main-content {
-            display: none; 
-            position: relative;
-            z-index: 20;
-        }
-
-        h1, h2 { color: var(--text-heading); border-bottom: 1px solid var(--border-color); padding-bottom: 8px; }
-        a { color: var(--text-link); text-decoration: none; }
-        a:hover { text-decoration: underline; }
-        
-        .card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            padding: 18px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            display: none;
-            transition: background-color 0.3s, border-color 0.3s;
-        }
-        
-        .card.active-section {
-            display: block; 
-        }
-
-        code {
-            background-color: var(--bg-code);
-            color: var(--text-code);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: monospace;
-        }
-
-        /* === DANH SÁCH BÀI VIẾT CON & NÚT QUAY LẠI === */
-        .sub-menu-list {
-            list-style: none;
+        * {
+            box-sizing: border-box;
+            margin: 0;
             padding: 0;
-            margin: 15px 0 0 0;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
         }
 
-        .sub-menu-btn {
-            background-color: var(--btn-sub-bg);
-            border: 1px solid var(--btn-sub-border);
-            color: var(--text-link);
-            padding: 10px 14px;
-            border-radius: 6px;
-            cursor: pointer;
-            text-align: left;
-            font-size: 0.95rem;
-            font-weight: 500;
-            width: 100%;
-            transition: all 0.2s;
-        }
-
-        .sub-menu-btn:hover {
-            border-color: var(--text-link);
-            background-color: var(--border-color);
-        }
-
-        .article-view {
-            display: none;
-            margin-top: 15px;
-        }
-
-        .article-view.active {
-            display: block;
-        }
-
-        .back-to-list-btn {
-            background: transparent;
-            border: 1px solid var(--border-color);
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
             color: var(--text-main);
-            padding: 6px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            margin-bottom: 15px;
-            transition: background 0.2s;
+            line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        .back-to-list-btn:hover {
-            background-color: var(--border-color);
-        }
-
-        /* === THANH ĐIỀU HƯỚNG (NAVBAR) === */
-        .navbar {
+        /* Navigation Header */
+        header {
             position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            background-color: var(--bg-navbar);
+            width: 100%;
+            background-color: rgba(11, 15, 25, 0.85);
+            backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 20px;
-            z-index: 1000;
-            transition: background-color 0.3s, border-color 0.3s;
         }
-        .nav-logo { font-weight: bold; color: var(--text-heading); font-size: 1.1rem; }
-        .nav-actions { display: flex; align-items: center; position: relative; }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-main);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo span {
+            color: var(--primary-color);
+        }
 
         .nav-links {
-            display: none;
-            flex-direction: column;
-            position: absolute;
-            top: 45px;
-            right: 0;
-            background-color: var(--bg-navbar);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 10px 20px;
-            min-width: 180px;
-            list-style: none;
-            margin: 0;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        .nav-links.active { display: flex; }
-        .nav-links li { margin: 10px 0; }
-        .nav-links a {
-            color: var(--text-main);
-            font-size: 0.95rem;
-            font-weight: 500;
-            cursor: pointer;
-            display: block;
-            transition: color 0.2s;
-        }
-        .nav-links a:hover { color: var(--text-link); }
-
-        .theme-toggle-btn {
-            background-color: var(--toggle-btn-bg);
-            color: var(--toggle-btn-text);
-            border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-right: 15px;
-        }
-
-        /* === NÚT 3 GẠCH === */
-        .menu-toggle {
             display: flex;
-            flex-direction: column;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .cta-btn {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .cta-btn:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 10rem 2rem 6rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-content h1 {
+            font-size: 3.2rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ffffff 0%, #9ca3af 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-content p {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .secondary-btn {
+            background-color: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .secondary-btn:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .code-preview {
+            background-color: var(--surface-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.88rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        .code-header {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot-red { background-color: #ef4444; }
+        .dot-yellow { background-color: #f59e0b; }
+        .dot-green { background-color: #10b981; }
+
+        .code-content {
+            color: #34d399;
+        }
+
+        .code-content .keyword { color: #60a5fa; }
+        .code-content .comment { color: #6b7280; font-style: italic; }
+
+        /* Features Section */
+        .features {
+            padding: 6rem 2rem;
+            background-color: var(--surface-color);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .features-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background-color: var(--surface-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 2.5rem;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Resources / Links Section */
+        .resources {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .resource-category {
+            background-color: var(--surface-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 2rem;
+        }
+
+        .resource-category h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.75rem;
+        }
+
+        .resource-list {
+            list-style: none;
+        }
+
+        .resource-list li {
+            margin-bottom: 1rem;
+        }
+
+        .resource-list a {
+            color: var(--text-main);
+            text-decoration: none;
+            display: flex;
             justify-content: space-between;
-            width: 24px;
-            height: 18px;
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            padding: 0;
+            align-items: center;
+            transition: var(--transition);
         }
-        .menu-toggle .bar {
-            height: 3px;
-            width: 100%;
-            background-color: var(--gear-color);
-            border-radius: 2px;
-            transition: all 0.3s ease;
+
+        .resource-list a:hover {
+            color: var(--primary-color);
+            padding-left: 5px;
         }
-        .menu-toggle.open .bar:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
-        .menu-toggle.open .bar:nth-child(2) { opacity: 0; }
-        .menu-toggle.open .bar:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+
+        .resource-list span {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--surface-color);
+            border-top: 1px solid var(--border-color);
+            padding: 4rem 2rem 2rem;
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--text-main);
+        }
+
+        .copyright {
+            border-top: 1px solid var(--border-color);
+            padding-top: 2rem;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                grid-template-columns: 1fr;
+                padding-top: 8rem;
+            }
+            .features-grid, .resources-grid {
+                grid-template-columns: 1fr;
+            }
+            .nav-links {
+                display: none;
+            }
+            .footer-content {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <!-- Màn hình 2 bánh răng lồng nhau -->
-    <div id="splash-screen">
-        <div class="gear-container">
-            <svg class="gear-icon" viewBox="0 0 100 100">
-                <defs>
-                    <mask id="outer-mask">
-                        <rect width="100" height="100" fill="white" />
-                        <circle cx="50" cy="50" r="26" fill="black" />
-                    </mask>
-                    <mask id="inner-mask">
-                        <rect width="100" height="100" fill="white" />
-                        <circle cx="50" cy="50" r="8" fill="black" />
-                    </mask>
-                </defs>
-
-                <g class="gear-outer-group" mask="url(#outer-mask)">
-                    <rect x="42" y="3" width="16" height="94" rx="3" transform="rotate(0 50 50)" />
-                    <rect x="42" y="3" width="16" height="94" rx="3" transform="rotate(60 50 50)" />
-                    <rect x="42" y="3" width="16" height="94" rx="3" transform="rotate(120 50 50)" />
-                    <circle cx="50" cy="50" r="38" />
-                </g>
-
-                <g class="gear-inner-group" mask="url(#inner-mask)">
-                    <rect x="45" y="27" width="10" height="46" rx="2" transform="rotate(15 50 50)" />
-                    <rect x="45" y="27" width="10" height="46" rx="2" transform="rotate(75 50 50)" />
-                    <rect x="45" y="27" width="10" height="46" rx="2" transform="rotate(135 50 50)" />
-                    <circle cx="50" cy="50" r="17" />
-                </g>
-            </svg>
-            <span class="splash-text">Main</span>
-        </div>
-    </div>
-
-    <!-- Thanh điều hướng đa chức năng -->
-    <nav class="navbar">
-        <div class="nav-logo">Alpha08-BNR</div>
-        <div class="nav-actions">
-            <button class="theme-toggle-btn" id="theme-btn">dark</button>
-            
-            <ul class="nav-links" id="nav-menu">
-                <li><a data-target="hardware">Hardware & Low-Level</a></li>
-                <li><a data-target="malware">Malware Development</a></li>
-                <li><a data-target="contact">Contact</a></li>
+    <!-- Navigation Header -->
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo">Nexus<span>Architecture</span></a>
+            <ul class="nav-links">
+                <li><a href="#architecture">Architecture</a></li>
+                <li><a href="#performance">Performance</a></li>
+                <li><a href="#specifications">Specifications</a></li>
+                <li><a href="#resources">Resources</a></li>
             </ul>
-            
-            <button class="menu-toggle" id="hamburger-btn">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </button>
+            <a href="#resources" class="cta-btn">Access Documentation</a>
         </div>
-    </nav>
+    </header>
 
-    <!-- NỘI DUNG CHÍNH -->
-    <div id="main-content">
-        <h1>Welcome to Alpha08-BNR Research Page</h1>
-        <p>Low-Level Programming, Hardware Specialist, and Malware Developer.</p>
-        <p><em>A place to store my nonsense.</em></p>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Binary System Architecture & Low-Level Control</h1>
+            <p>Engineered for high-performance computing, direct memory address manipulation, and hardware-level execution without OS safety abstraction overhead.</p>
+            <div class="hero-actions">
+                <a href="#resources" class="cta-btn">System Specs</a>
+                <a href="#architecture" class="secondary-btn">Explore Code</a>
+            </div>
+        </div>
+        <div class="code-preview">
+            <div class="code-header">
+                <div class="dot dot-red"></div>
+                <div class="dot dot-yellow"></div>
+                <div class="dot dot-green"></div>
+            </div>
+            <div class="code-content">
+                <span class="comment">; Binary Navigation Runtime (BNR) Assembly Core</span><br>
+                <span class="keyword">section</span> .text<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">global</span> _start<br><br>
+                _start:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">mov</span> rax, 0x01<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">mov</span> rbx, [block_ptr]<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">add</span> rbx, 0x10<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">syscall</span>
+            </div>
+        </div>
+    </section>
 
-        <!-- PHẦN 1: HARDWARE & LOW-LEVEL -->
-        <div class="card" id="hardware">
-            <h2>1. Hardware & Low-Level Programming</h2>
-            
-            <!-- Danh sách các bài viết con (Menu lựa chọn) -->
-            <div class="sub-menu-container active">
-                <p>Chọn chủ đề nghiên cứu bên dưới:</p>
-                <ul class="sub-menu-list">
-                    <li><button class="sub-menu-btn" data-article="hw-art-1">🔹 SMM Drivers & Memory Protection Mechanisms in DXE Phase</button></li>
-                    <li><button class="sub-menu-btn" data-article="hw-art-2">🔹 Forcing Cache Execution via ASM (cld & wbinvd)</button></li>
+    <!-- Features Section -->
+    <section id="architecture" class="features">
+        <div class="section-header">
+            <h2>Core Architectural Principles</h2>
+            <p>Unrestricted low-level manipulation designed for peak execution speed and absolute memory freedom.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Assembly-Level Precision</h3>
+                <p>Written directly in Assembly to manage memory regions and execute pure binary pointer adjustments across system blocks.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚙️</div>
+                <h3>Raw Binary Execution</h3>
+                <p>Constructed with unconstrained binary blocks operating outside standard operating system safety guidelines for maximum speed.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <h3>Zero Overhead Allocation</h3>
+                <p>Direct register manipulation paired with custom memory layout routines to eliminate runtime latency.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resources & Thematic Links Section -->
+    <section id="resources" class="resources">
+        <div class="section-header">
+            <h2>Technical Documentation & External Links</h2>
+            <p>Direct references to official specifications, low-level architecture documentation, and system resources.</p>
+        </div>
+        <div class="resources-grid">
+            <!-- Category 1: Assembly & Low-Level Architecture -->
+            <div class="resource-category">
+                <h3>Assembly & Binary Systems</h3>
+                <ul class="resource-list">
+                    <li>
+                        <a href="https://en.wikipedia.org/wiki/Assembly_language" target="_blank" rel="noopener">
+                            Assembly Language Foundations <span>Wikipedia</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.felixcloutier.com/x86/" target="_blank" rel="noopener">
+                            x86/x64 Instruction Reference Manual <span>Felix Cloutier</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://wiki.osdev.org/Expanded_Main_Page" target="_blank" rel="noopener">
+                            OS Development & Bare-Metal Wiki <span>OSDev</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/topics/assembly" target="_blank" rel="noopener">
+                            Assembly Systems Repositories <span>GitHub Topics</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
 
-            <!-- Bài viết 1 -->
-            <div class="article-view" id="hw-art-1">
-                <button class="back-to-list-btn">← Quay lại danh sách</button>
-                <h3>SMM Drivers & Memory Protection in DXE Phase</h3>
-                <p>Research on memory protection mechanisms for SMM Drivers in the DXE phase prior to OS boot. Deep-dive into SMRAM protection configuration and SMI handler safety.</p>
-                <ul>
-                    <li>Configuring SMM Code Access Sanity Check.</li>
-                    <li>Preventing unauthorized communication channels before OS transition.</li>
-                </ul>
-            </div>
-
-            <!-- Bài viết 2 -->
-            <div class="article-view" id="hw-art-2">
-                <button class="back-to-list-btn">← Quay lại danh sách</button>
-                <h3>Forcing Cache Execution via ASM</h3>
-                <p>Detailed breakdown of forcing cache execution using assembly instructions like <code>cld</code> and <code>wbinvd</code> for hardware level manipulation.</p>
-            </div>
-        </div>
-
-        <!-- PHẦN 2: MALWARE DEVELOPMENT -->
-        <div class="card" id="malware">
-            <h2>2. Malware Development (Malware Dev)</h2>
-            
-            <!-- Danh sách các bài viết con -->
-            <div class="sub-menu-container active">
-                <p>Chọn tài liệu nghiên cứu bên dưới:</p>
-                <ul class="sub-menu-list">
-                    <li><button class="sub-menu-btn" data-article="mw-art-1">🔹 Advanced EDR Evasion: Indirect Syscall + Halo's Gate + Fake Ret</button></li>
-                </ul>
-            </div>
-
-            <!-- Bài viết 1 -->
-            <div class="article-view" id="mw-art-1">
-                <button class="back-to-list-btn">← Quay lại danh sách</button>
-                <h3>Advanced EDR Evasion Chain</h3>
-                <p>Technical analysis of an advanced EDR evasion chain combining <strong>Indirect Syscall + Halo's Gate + Fake Ret</strong> (Fake Return Address to spoof the Call Stack).</p>
-                <ul>
-                    <li>Bypassing user-mode API hooking effortlessly.</li>
-                    <li>Restoring stack frames to thwart automated memory scanners.</li>
+            <!-- Category 2: Systems Programming & Performance -->
+            <div class="resource-category">
+                <h3>Memory Management & Systems</h3>
+                <ul class="resource-list">
+                    <li>
+                        <a href="https://www.kernel.org/doc/html/latest/" target="_blank" rel="noopener">
+                            Linux Kernel Architecture Documentation <span>Kernel.org</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://godbolt.org/" target="_blank" rel="noopener">
+                            Compiler Explorer Assembly Analysis <span>Godbolt</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://en.wikipedia.org/wiki/Memory_management" target="_blank" rel="noopener">
+                            Pointer Arithmetic & Allocation Concepts <span>Wikipedia</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.nasm.us/docs.php" target="_blank" rel="noopener">
+                            NASM Assembler Official Documentation <span>NASM Documentation</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
+    </section>
 
-        <!-- PHẦN 3: CONTACT -->
-        <div class="card" id="contact">
-            <h2>3. Contact & Collaboration</h2>
-            <p>For research collaboration or technical peer review, please contact via the official LinkedIn profile: 
-                <a href="https://linkedin.com" target="_blank">://linkedin.com</a>
-            </p>
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <a href="#" class="logo">Nexus<span>Architecture</span></a>
+            <ul class="footer-links">
+                <li><a href="#architecture">Architecture</a></li>
+                <li><a href="#specifications">Specs</a></li>
+                <li><a href="#resources">Documentation</a></li>
+            </ul>
         </div>
-    </div>
+        <p class="copyright">&copy; 2026 Nexus Systems Architecture. All source code and documentation written in English.</p>
+    </footer>
 
-    <script>
-        const hamburgerBtn = document.getElementById('hamburger-btn');
-        const navMenu = document.getElementById('nav-menu');
-        const menuLinks = document.querySelectorAll('.nav-links a');
-        const splashScreen = document.getElementById('splash-screen');
-        const mainContent = document.getElementById('main-content');
-        const cards = document.querySelectorAll('.card');
-        const themeBtn = document.getElementById('theme-btn');
-
-        // Bật/tắt menu mobile 3 gạch
-        hamburgerBtn.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-            hamburgerBtn.classList.toggle('open');
-        });
-
-        // Xử lý chuyển đổi qua lại giữa các danh mục lớn trên navbar
-        menuLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                const targetId = link.getAttribute('data-target');
-
-                splashScreen.style.display = 'none';
-                mainContent.style.display = 'block';
-
-                cards.forEach(card => {
-                    card.classList.remove('active-section');
-                    // Reset lại trạng thái: ẩn bài viết, hiện lại menu con khi đổi danh mục
-                    const subMenu = card.querySelector('.sub-menu-container');
-                    const articles = card.querySelectorAll('.article-view');
-                    if (subMenu) subMenu.style.display = 'block';
-                    articles.forEach(art => art.classList.remove('active'));
-                });
-
-                const targetCard = document.getElementById(targetId);
-                if (targetCard) {
-                    targetCard.classList.add('active-section');
-                }
-
-                navMenu.classList.remove('active');
-                hamburgerBtn.classList.remove('open');
-            });
-        });
-
-        // Xử lý bấm vào tên bài viết con để hiển thị nội dung chi tiết
-        document.querySelectorAll('.sub-menu-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const articleId = btn.getAttribute('data-article');
-                const card = btn.closest('.card');
-                
-                // Ẩn danh sách menu con
-                card.querySelector('.sub-menu-container').style.display = 'none';
-                
-                // Hiện bài viết được chọn
-                card.querySelectorAll('.article-view').forEach(art => art.classList.remove('active'));
-                document.getElementById(articleId).classList.add('active');
-            });
-        });
-
-        // Xử lý nút quay lại danh sách
-        document.querySelectorAll('.back-to-list-btn').forEach(backBtn => {
-            backBtn.addEventListener('click', () => {
-                const card = backBtn.closest('.card');
-                
-                // Ẩn bài viết chi tiết
-                card.querySelectorAll('.article-view').forEach(art => art.classList.remove('active'));
-                
-                // Hiện lại danh sách menu con
-                card.querySelector('.sub-menu-container').style.display = 'block';
-            });
-        });
-
-        // Xử lý đổi theme sáng/tối
-        themeBtn.addEventListener('click', () => {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            if (currentTheme === 'dark') {
-                document.documentElement.removeAttribute('data-theme');
-                themeBtn.textContent = 'dark';
-            } else {
-                document.documentElement.setAttribute('data-theme', 'dark');
-                themeBtn.textContent = 'white';
-            }
-        });
-    </script>
 </body>
-</html>
+        </html>
+        
