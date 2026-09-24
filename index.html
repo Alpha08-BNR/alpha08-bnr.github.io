@@ -267,7 +267,7 @@
             font-size: 0.95rem;
         }
 
-        /* Resources / Links Section */
+        /* Repositories / Categories Section (Trang chủ không chứa liên kết tài liệu chi tiết ở đây nữa, thay vào đó dẫn sang các trang tài liệu riêng) */
         .resources {
             padding: 6rem 2rem;
             max-width: 1200px;
@@ -285,41 +285,37 @@
             border: 1px solid var(--border-color);
             border-radius: 10px;
             padding: 2rem;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            transition: var(--transition);
+        }
+
+        .resource-category:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+            box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.2);
         }
 
         .resource-category h3 {
             font-size: 1.4rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             color: var(--primary-color);
             border-bottom: 1px solid var(--border-color);
             padding-bottom: 0.75rem;
         }
 
-        .resource-list {
-            list-style: none;
-        }
-
-        .resource-list li {
-            margin-bottom: 1rem;
-        }
-
-        .resource-list a {
-            color: var(--text-main);
-            text-decoration: none;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: var(--transition);
-        }
-
-        .resource-list a:hover {
-            color: var(--primary-color);
-            padding-left: 5px;
-        }
-
-        .resource-list span {
+        .resource-category p {
             color: var(--text-muted);
-            font-size: 0.85rem;
+            font-size: 0.95rem;
+        }
+
+        .category-link-hint {
+            display: inline-block;
+            margin-top: 1.5rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 0.9rem;
         }
 
         /* Footer */
@@ -401,7 +397,6 @@
                 gap: 1.5rem;
             }
 
-            /* Nút Documentation đã thu nhỏ gọn hơn trên di động */
             .cta-btn {
                 padding: 0.35rem 0.75rem;
                 font-size: 0.8rem;
@@ -424,8 +419,8 @@
                 <li><a href="#architecture">Architecture</a></li>
                 <li><a href="#performance">Performance</a></li>
                 <li><a href="#specifications">Specifications</a></li>
-                <li><a href="#resources">Repositories</a></li>
-                <li><a href="#resources" class="cta-btn">Documentation</a></li>
+                <li><a href="#resources">Categories</a></li>
+                <li><a href="docs-repositories.html" class="cta-btn">Documentation</a></li>
             </ul>
         </div>
     </header>
@@ -436,7 +431,7 @@
             <h1>Binary System Architecture & Low-Level Control</h1>
             <p>Engineered for high-performance computing, direct memory address manipulation, and hardware-level execution without OS safety abstraction overhead.</p>
             <div class="hero-actions">
-                <a href="#resources" class="cta-btn">System Specs</a>
+                <a href="docs-repositories.html" class="cta-btn">System Specs</a>
                 <a href="#architecture" class="secondary-btn">Explore Code</a>
             </div>
         </div>
@@ -484,66 +479,26 @@
         </div>
     </section>
 
-    <!-- Resources & Repositories Section -->
+    <!-- Resources & Categories Section (Chuyển hướng sang các trang tài liệu riêng biệt) -->
     <section id="resources" class="resources">
         <div class="section-header">
-            <h2>Repositories & Technical Documentation</h2>
-            <p>Direct references to official GitHub repositories, low-level architecture documentation, and system resources.</p>
+            <h2>System Categories & Documentation Portals</h2>
+            <p>Chọn các ngăn xếp bên dưới để chuyển sang trang chuyên đề chứa toàn bộ tài liệu và liên kết mã nguồn chi tiết.</p>
         </div>
         <div class="resources-grid">
             <!-- Ngăn 1: Alpha08-BNR Repositories -->
-            <div class="resource-category">
+            <a href="docs-repositories.html" class="resource-category">
                 <h3>Alpha08-BNR Source Repositories</h3>
-                <ul class="resource-list">
-                    <li>
-                        <a href="https://github.com/Alpha08-BNR?tab=repositories" target="_blank" rel="noopener">
-                            All Repositories Profile <span>GitHub</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://github.com/Alpha08-BNR/Driver-SMM-lock-0x3a-DXC" target="_blank" rel="noopener">
-                            Driver SMM Lock 0x3a DXC <span>SMM Module</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://github.com/Alpha08-BNR/Driver-SMM-lock-Ram" target="_blank" rel="noopener">
-                            Driver SMM Lock RAM <span>Hardware Driver</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://github.com/Alpha08-BNR/indirect-syscall-halo-gate-fakeret" target="_blank" rel="noopener">
-                            Indirect Syscall Halo Gate Fakeret <span>Syscall Evasion</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+                <p>Truy cập trang tài liệu chứa kho lưu trữ GitHub chính thức, driver SMM lock và các module mã nguồn thấp.</p>
+                <span class="category-link-hint">Xem tài liệu kho nguồn &rarr;</span>
+            </a>
 
             <!-- Ngăn 2: Systems Programming & Standards -->
-            <div class="resource-category">
+            <a href="docs-standards.html" class="resource-category">
                 <h3>Systems Programming & Standards</h3>
-                <ul class="resource-list">
-                    <li>
-                        <a href="https://www.felixcloutier.com/x86/" target="_blank" rel="noopener">
-                            x86/x64 Instruction Reference Manual <span>Felix Cloutier</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://wiki.osdev.org/Expanded_Main_Page" target="_blank" rel="noopener">
-                            OS Development & Bare-Metal Wiki <span>OSDev</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://www.kernel.org/doc/html/latest/" target="_blank" rel="noopener">
-                            Linux Kernel Architecture Documentation <span>Kernel.org</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://godbolt.org/" target="_blank" rel="noopener">
-                            Compiler Explorer Assembly Analysis <span>Godbolt</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+                <p>Truy cập trang tài liệu chứa hướng dẫn tập lệnh x86/x64, tài liệu kiến trúc nhân hệ điều hành và công cụ phân tích.</p>
+                <span class="category-link-hint">Xem tài liệu tiêu chuẩn &rarr;</span>
+            </a>
         </div>
     </section>
 
@@ -553,8 +508,8 @@
             <a href="#" class="logo">Nexus<span>Core</span></a>
             <ul class="footer-links">
                 <li><a href="#architecture">Architecture</a></li>
-                <li><a href="#specifications">Specs</a></li>
-                <li><a href="#resources">Repositories</a></li>
+                <li><a href="docs-repositories.html">Repositories</a></li>
+                <li><a href="docs-standards.html">Standards</a></li>
             </ul>
         </div>
         <p class="copyright">&copy; 2026 Nexus Systems Architecture. All source code and documentation written in English.</p>
