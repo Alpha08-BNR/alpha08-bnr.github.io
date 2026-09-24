@@ -66,12 +66,12 @@
         }
 
         .gear-icon {
-            width: 180px;
-            height: 180px;
+            width: 300px;
+            height: 300px;
             filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.4));
         }
 
-        /* Bánh răng ngoài: Màu đỏ trong suốt, phát sáng, quay theo chiều kim đồng hồ */
+        /* Bánh răng ngoài: Đỏ trong suốt, phát sáng, quay chiều kim đồng hồ */
         .gear-outer-group {
             transform-origin: 50% 50%;
             animation: spin-cw 4s linear infinite;
@@ -79,10 +79,10 @@
             filter: drop-shadow(0 0 8px rgba(231, 76, 60, 0.8));
         }
 
-        /* Bánh răng trong: Màu xanh dương trong suốt, nhỏ hơn, có khoảng hở, quay ngược chiều */
+        /* Bánh răng trong: Xanh dương trong suốt, nhỏ hơn, quay ngược chiều */
         .gear-inner-group {
             transform-origin: 50% 50%;
-            animation: spin-ccw 3s linear infinite;
+            animation: spin-ccw 1s linear infinite;
             fill: rgba(52, 152, 219, 0.75);
             filter: drop-shadow(0 0 8px rgba(52, 152, 219, 0.8));
         }
@@ -235,31 +235,41 @@
 </head>
 <body>
 
-    <!-- Màn hình 2 bánh răng lồng nhau đồng tâm, có khoảng hở, trong suốt phát sáng -->
+    <!-- Màn hình 2 bánh răng lồng nhau, trong suốt thật sự bằng SVG Mask -->
     <div id="splash-screen">
         <div class="gear-container">
             <svg class="gear-icon" viewBox="0 0 100 100">
-                <!-- BÁNH RĂNG NGOÀI (MÀU ĐỎ - TO HƠN) -->
-                <g class="gear-outer-group">
+                <defs>
+                    <!-- Mặt nạ đục lỗ cho bánh ngoài (Khoét vòng tròn tâm r=26) -->
+                    <mask id="outer-mask">
+                        <rect width="100" height="100" fill="white" />
+                        <circle cx="50" cy="50" r="26" fill="black" />
+                    </mask>
+
+                    <!-- Mặt nạ đục lỗ cho bánh trong (Khoét trục tâm r=8) -->
+                    <mask id="inner-mask">
+                        <rect width="100" height="100" fill="white" />
+                        <circle cx="50" cy="50" r="8" fill="black" />
+                    </mask>
+                </defs>
+
+                <!-- BÁNH RĂNG NGOÀI (MÀU ĐỎ - TO HƠN, DÙNG MẶT NẠ ĐỤC LỖ) -->
+                <g class="gear-outer-group" mask="url(#outer-mask)">
                     <rect x="42" y="3" width="16" height="94" rx="3" transform="rotate(0 50 50)" />
                     <rect x="42" y="3" width="16" height="94" rx="3" transform="rotate(60 50 50)" />
                     <rect x="42" y="3" width="16" height="94" rx="3" transform="rotate(120 50 50)" />
                     <circle cx="50" cy="50" r="38" />
-                    <!-- Lỗ khoét rỗng bên trong bánh đỏ để lồng bánh xanh vào -->
-                    <circle cx="50" cy="50" r="26" fill="var(--splash-bg)" />
                 </g>
 
                 <!-- BÁNH RĂNG TRONG (MÀU XANH DƯƠNG - NHỎ HƠN, CÓ KHE HỞ CÁCH BIỆT) -->
-                <g class="gear-inner-group">
+                <g class="gear-inner-group" mask="url(#inner-mask)">
                     <rect x="45" y="20" width="10" height="60" rx="2" transform="rotate(15 50 50)" />
                     <rect x="45" y="20" width="10" height="60" rx="2" transform="rotate(75 50 50)" />
                     <rect x="45" y="20" width="10" height="60" rx="2" transform="rotate(135 50 50)" />
-                    <circle cx="50" cy="50" r="20" />
-                    <!-- Lỗ trục rỗng ở tâm bánh trong -->
-                    <circle cx="50" cy="50" r="8" fill="var(--splash-bg)" />
+                    <circle cx="50" cy="50" r="17" />
                 </g>
             </svg>
-            <span class="splash-text">System Core Active</span>
+            <span class="splash-text">Main</span>
         </div>
     </div>
 
@@ -267,11 +277,11 @@
     <nav class="navbar">
         <div class="nav-logo">Alpha08-BNR</div>
         <div class="nav-actions">
-            <button class="theme-toggle-btn" id="theme-btn">Đổi màu đen</button>
+            <button class="theme-toggle-btn" id="theme-btn">dark</button>
             
             <ul class="nav-links" id="nav-menu">
                 <li><a data-target="hardware">Hardware & Low-Level</a></li>
-                <li><a data-target="malware">Malware Dev</a></li>
+                <li><a data-target="malware">Malware Development</a></li>
                 <li><a data-target="contact">Contact</a></li>
             </ul>
             
@@ -287,7 +297,7 @@
     <div id="main-content">
         <h1>Welcome to Alpha08-BNR Research Page</h1>
         <p>Low-Level Programming, Hardware Specialist, and Malware Developer.</p>
-        <p><em>Nơi đây lưu trữ các thứ nhảm nhí của tôi</em></p>
+        <p><em>A place to store my nonsense.</em></p>
 
         <div class="card" id="hardware">
             <h2>1. Hardware & Low-Level Programming</h2>
@@ -350,10 +360,10 @@
             const currentTheme = document.documentElement.getAttribute('data-theme');
             if (currentTheme === 'dark') {
                 document.documentElement.removeAttribute('data-theme');
-                themeBtn.textContent = 'Đổi màu đen';
+                themeBtn.textContent = 'dark';
             } else {
                 document.documentElement.setAttribute('data-theme', 'dark');
-                themeBtn.textContent = 'Đổi màu trắng';
+                themeBtn.textContent = 'white';
             }
         });
     </script>
