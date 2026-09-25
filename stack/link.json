@@ -1,0 +1,27 @@
+{
+  "stackTitle": "Source Code & Modules",
+  "stackDescription": "Direct access to low-level source code repositories and security tools.",
+  "items": [
+    {
+      "icon": "🔓",
+      "title": "Privilege Escalation Check",
+      "description": "Tool for auditing and analyzing privilege escalation vulnerabilities.",
+      "url": "https://github.com/Alpha08-BNR/Check--Privilege-escalation-vulnerability",
+      "linkText": "View on GitHub &rarr;"
+    },
+    {
+      "icon": "🔑",
+      "title": "Rolling Key Chain & CNG",
+      "description": "Source code for rolling key chain mechanisms and key stretching on the Windows CNG platform.",
+      "url": "https://github.com/Alpha08-BNR/Rolling-key-key-chain-key-stretching-Window-CNG",
+      "linkText": "View on GitHub &rarr;"
+    },
+    {
+      "icon": "📋",
+      "title": "Log Filtering Support",
+      "description": "Utility supporting system log filtering and processing.",
+      "url": "https://github.com/Alpha08-BNR/Log-filtering-support",
+      "linkText": "View Source Code &rarr;"
+    }
+  ]
+}
