@@ -412,13 +412,13 @@
                 <div class="dot dot-green"></div>
             </div>
             <div class="code-content">
-                <span class="comment">; </span><br>
+                <span class="comment">; assembly </span><br>
                 <span class="keyword">section</span> .text<br>
                 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">global</span> _start<br><br>
                 _start:<br>
                 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">mov</span> eax, 0xCFC<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">mov</span> rdx, 0x05<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">call locksys</span>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">mov</span> dx, eax<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">out dx ,eax</span>
             </div>
         </div>
     </section>
