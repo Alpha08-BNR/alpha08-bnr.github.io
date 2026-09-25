@@ -367,7 +367,6 @@
             <ul class="nav-links" id="navLinks">
                 <li><a href="#architecture">Architecture</a></li>
                 <li><a href="#repositories">Repositories</a></li>
-                <li><a href="https://github.com/Alpha08-BNR/Check--Privilege-escalation-vulnerability" target="_blank" class="cta-btn">GitHub Repos</a></li>
             </ul>
         </div>
     </header>
@@ -377,7 +376,7 @@
             <h1>Binary System Architecture & Low-Level Control</h1>
             <p>Engineered for high-performance computing, direct memory address manipulation, and hardware-level execution without OS safety abstraction overhead.</p>
             <div class="hero-actions">
-                <a href="https://github.com/Alpha08-BNR/Check--Privilege-escalation-vulnerability" target="_blank" class="cta-btn">Explore GitHub</a>
+                <a href="#repositories" class="cta-btn">Explore Repositories</a>
                 <a href="#architecture" class="secondary-btn">Explore Code</a>
             </div>
         </div>
@@ -424,31 +423,14 @@
         </div>
     </section>
 
-    <!-- Thêm phần Repositories để hiển thị các đường dẫn của bạn -->
+    <!-- Khu vực hiển thị ngăn xếp nạp động từ file JSON -->
     <section id="repositories" class="features" style="background-color: var(--bg-color);">
         <div class="section-header">
-            <h2>Source Code & Modules</h2>
-            <p>Truy cập trực tiếp các kho lưu trữ mã nguồn và công cụ bảo mật cấp thấp.</p>
+            <h2 id="stack-main-title">Source Code & Modules</h2>
+            <p id="stack-main-desc">Đang tải cấu hình ngăn xếp từ hệ thống...</p>
         </div>
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">🔓</div>
-                <h3>Privilege Escalation Check</h3>
-                <p>Công cụ kiểm tra và phân tích lỗ hổng leo thang đặc quyền.</p>
-                <a href="https://github.com/Alpha08-BNR/Check--Privilege-escalation-vulnerability" target="_blank">Xem trên GitHub &rarr;</a>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🔑</div>
-                <h3>Rolling Key Chain & CNG</h3>
-                <p>Mã nguồn về cơ chế chuỗi khóa luân phiên và kéo dài khóa trên nền tảng Windows CNG.</p>
-                <a href="https://github.com/Alpha08-BNR/Rolling-key-key-chain-key-stretching-Window-CNG" target="_blank">Xem trên GitHub &rarr;</a>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">📋</div>
-                <h3>Log Filtering Support</h3>
-                <p>Hỗ trợ lọc và xử lý tệp log hệ thống (`Check_logv4.cpp`).</p>
-                <a href="https://github.com/Alpha08-BNR/Log-filtering-support/blob/main/Check_logv4.cpp" target="_blank">Xem mã nguồn &rarr;</a>
-            </div>
+        <div class="features-grid" id="stack-cards-container">
+            <!-- Dữ liệu card sẽ được Javascript tự động chèn vào đây -->
         </div>
     </section>
 
@@ -464,6 +446,7 @@
     </footer>
 
     <script>
+        // Xử lý menu responsive trên thiết bị di động
         const hamburger = document.getElementById('hamburger');
         const navLinks = document.getElementById('navLinks');
 
@@ -476,7 +459,49 @@
                 navLinks.classList.remove('active');
             });
         });
+
+        // Xử lý nạp động dữ liệu ngăn xếp từ file JSON ngoài (Ví dụ: stacks/smm-driver.json)
+        document.addEventListener("DOMContentLoaded", function () {
+            const jsonFileUrl = './stacks/smm-driver.json'; 
+
+            fetch(jsonFileUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Không thể kết nối tới file cấu hình.');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const titleEl = document.getElementById('stack-main-title');
+                    const descEl = document.getElementById('stack-main-desc');
+                    if (titleEl && data.stackTitle) titleEl.textContent = data.stackTitle;
+                    if (descEl && data.stackDescription) descEl.textContent = data.stackDescription;
+
+                    const container = document.getElementById('stack-cards-container');
+                    if (!container) return;
+                    
+                    container.innerHTML = ''; 
+
+                    if (data.items && Array.isArray(data.items)) {
+                        data.items.forEach(item => {
+                            const card = document.createElement('div');
+                            card.className = 'feature-card';
+                            card.innerHTML = `
+                                <div class="feature-icon">${item.icon || '🔗'}</div>
+                                <h3>${item.title}</h3>
+                                <p>${item.description}</p>
+                                <a href="${item.url}" target="_blank">${item.linkText || 'Truy cập tài liệu &rarr;'}</a>
+                            `;
+                            container.appendChild(card);
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Lỗi khi tải ngăn xếp:', error);
+                    const descEl = document.getElementById('stack-main-desc');
+                    if (descEl) descEl.textContent = 'Chưa thiết lập file dữ liệu hoặc đường dẫn JSON không hợp lệ.';
+                });
+        });
     </script>
 </body>
-    </html>
-    
+</html>
