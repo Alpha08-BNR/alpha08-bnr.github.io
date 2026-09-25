@@ -412,14 +412,13 @@
                 <div class="dot dot-green"></div>
             </div>
             <div class="code-content">
-                <span class="comment">; Binary Navigation Runtime (BNR) Assembly Core</span><br>
+                <span class="comment">; </span><br>
                 <span class="keyword">section</span> .text<br>
                 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">global</span> _start<br><br>
                 _start:<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">mov</span> rax, 0x01<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">mov</span> rbx, [block_ptr]<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">add</span> rbx, 0x10<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">syscall</span>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">mov</span> eax, 0xCFC<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">mov</span> rdx, 0x05<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">call locksys</span>
             </div>
         </div>
     </section>
