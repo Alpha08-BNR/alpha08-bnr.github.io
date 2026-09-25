@@ -30,6 +30,7 @@
             color: var(--text-main);
             line-height: 1.6;
             overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
         header {
@@ -84,23 +85,6 @@
             color: var(--primary-color);
         }
 
-        .cta-btn {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: var(--transition);
-            white-space: nowrap;
-        }
-
-        .cta-btn:hover {
-            background-color: var(--primary-hover);
-            transform: translateY(-1px);
-        }
-
         .hamburger {
             display: none;
             flex-direction: column;
@@ -151,6 +135,23 @@
             display: flex;
             gap: 1rem;
             flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .cta-btn:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
         }
 
         .secondary-btn {
@@ -213,7 +214,7 @@
         .section-header {
             text-align: center;
             max-width: 700px;
-            margin: 0 auto 4rem;
+            margin: 0 auto 3rem;
         }
 
         .section-header h2 {
@@ -224,6 +225,29 @@
         .section-header p {
             color: var(--text-muted);
             font-size: 1.1rem;
+        }
+
+        /* Thanh tìm kiếm cho ngăn xếp bên ngoài */
+        .search-box-container {
+            max-width: 600px;
+            margin: 0 auto 3rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            background-color: var(--surface-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-main);
+            font-size: 1rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
         }
 
         .features-grid {
@@ -366,7 +390,8 @@
             </button>
             <ul class="nav-links" id="navLinks">
                 <li><a href="#architecture">Architecture</a></li>
-                <li><a href="#repositories">Repositories</a></li>
+                <!-- Thêm mục mới vào menu 3 gạch / thanh điều hướng -->
+                <li><a href="#external-stack">External Docs & Repos</a></li>
             </ul>
         </div>
     </header>
@@ -376,7 +401,7 @@
             <h1>Binary System Architecture & Low-Level Control</h1>
             <p>Engineered for high-performance computing, direct memory address manipulation, and hardware-level execution without OS safety abstraction overhead.</p>
             <div class="hero-actions">
-                <a href="#repositories" class="cta-btn">Explore Repositories</a>
+                <a href="#external-stack" class="cta-btn">Explore External Docs</a>
                 <a href="#architecture" class="secondary-btn">Explore Code</a>
             </div>
         </div>
@@ -423,14 +448,20 @@
         </div>
     </section>
 
-    <!-- Khu vực hiển thị ngăn xếp nạp động từ file JSON -->
-    <section id="repositories" class="features" style="background-color: var(--bg-color);">
+    <!-- Ngăn lớn chứa danh sách động kết hợp với Thanh tìm kiếm (Search Bar) -->
+    <section id="external-stack" class="features" style="background-color: var(--bg-color);">
         <div class="section-header">
-            <h2 id="stack-main-title">Source Code & Modules</h2>
-            <p id="stack-main-desc">Đang tải cấu hình ngăn xếp từ hệ thống...</p>
+            <h2 id="stack-main-title">External Docs & Repos</h2>
+            <p id="stack-main-desc">Loading configuration from external stacks...</p>
         </div>
+        
+        <!-- Ô tìm kiếm động -->
+        <div class="search-box-container">
+            <input type="text" id="stackSearchInput" class="search-input" placeholder="Type keywords (e.g., privilege, log, rolling)...">
+        </div>
+
         <div class="features-grid" id="stack-cards-container">
-            <!-- Dữ liệu card sẽ được Javascript tự động chèn vào đây -->
+            <!-- Dữ liệu được nạp tự động qua JavaScript từ file JSON -->
         </div>
     </section>
 
@@ -439,7 +470,7 @@
             <a href="#" class="logo">Nexus<span>Core</span></a>
             <ul class="footer-links">
                 <li><a href="#architecture">Architecture</a></li>
-                <li><a href="#repositories">Repositories</a></li>
+                <li><a href="#external-stack">External Docs & Repos</a></li>
             </ul>
         </div>
         <p class="copyright">&copy; 2026 Nexus Systems Architecture. All rights reserved.</p>
@@ -460,7 +491,10 @@
             });
         });
 
-        // Xử lý nạp động dữ liệu ngăn xếp từ file JSON ngoài (Ví dụ: stacks/smm-driver.json)
+        // Biến lưu trữ dữ liệu các card để phục vụ tính năng tìm kiếm
+        let allStackItems = [];
+
+        // Xử lý nạp động dữ liệu ngăn xếp từ file JSON ngoài và kích hoạt tìm kiếm theo từ khóa
         document.addEventListener("DOMContentLoaded", function () {
             const jsonFileUrl = './stacks/smm-driver.json'; 
 
@@ -477,23 +511,9 @@
                     if (titleEl && data.stackTitle) titleEl.textContent = data.stackTitle;
                     if (descEl && data.stackDescription) descEl.textContent = data.stackDescription;
 
-                    const container = document.getElementById('stack-cards-container');
-                    if (!container) return;
-                    
-                    container.innerHTML = ''; 
-
                     if (data.items && Array.isArray(data.items)) {
-                        data.items.forEach(item => {
-                            const card = document.createElement('div');
-                            card.className = 'feature-card';
-                            card.innerHTML = `
-                                <div class="feature-icon">${item.icon || '🔗'}</div>
-                                <h3>${item.title}</h3>
-                                <p>${item.description}</p>
-                                <a href="${item.url}" target="_blank">${item.linkText || 'Truy cập tài liệu &rarr;'}</a>
-                            `;
-                            container.appendChild(card);
-                        });
+                        allStackItems = data.items;
+                        renderCards(allStackItems);
                     }
                 })
                 .catch(error => {
@@ -501,7 +521,46 @@
                     const descEl = document.getElementById('stack-main-desc');
                     if (descEl) descEl.textContent = 'Chưa thiết lập file dữ liệu hoặc đường dẫn JSON không hợp lệ.';
                 });
+
+            // Lắng nghe sự kiện gõ phím vào ô tìm kiếm
+            const searchInput = document.getElementById('stackSearchInput');
+            searchInput.addEventListener('input', function (e) {
+                const keyword = e.target.value.toLowerCase().trim();
+                
+                // Lọc danh sách nếu tiêu đề hoặc mô tả chứa từ khóa người dùng gõ
+                const filteredItems = allStackItems.filter(item => {
+                    return item.title.toLowerCase().includes(keyword) || 
+                           item.description.toLowerCase().includes(keyword);
+                });
+
+                renderCards(filteredItems);
+            });
         });
+
+        // Hàm hỗ trợ vẽ các thẻ card ra màn hình
+        function renderCards(items) {
+            const container = document.getElementById('stack-cards-container');
+            if (!container) return;
+            
+            container.innerHTML = ''; 
+
+            if (items.length === 0) {
+                container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: var(--text-muted);">No matching documents or repositories found.</p>`;
+                return;
+            }
+
+            items.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'feature-card';
+                card.innerHTML = `
+                    <div class="feature-icon">${item.icon || '🔗'}</div>
+                    <h3>${item.title}</h3>
+                    <p>${item.description}</p>
+                    <a href="${item.url}" target="_blank">${item.linkText || 'View on GitHub &rarr;'}</a>
+                `;
+                container.appendChild(card);
+            });
+        }
     </script>
 </body>
 </html>
