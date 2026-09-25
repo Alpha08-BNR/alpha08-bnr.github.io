@@ -25,16 +25,19 @@
     },
     {
       "title": "indirect syscall + halo's gate + fake return address",
+      "description": "Indirect syscall implementation utilizing Halo's Gate and fake return address techniques.",
       "url": "https://github.com/Alpha08-BNR/indirect-syscall-halo-gate-fakeret",
       "linkText": "View Source Code &rarr;"
     },
     {
       "title": "Driver SMM lock SMRAM",
+      "description": "System Management Mode driver module for locking SMRAM regions.",
       "url": "https://github.com/Alpha08-BNR/Driver-SMM-lock-Ram",
       "linkText": "View Source Code &rarr;"
     },
     {
       "title": "Driver SMM lock 0x3a",
+      "description": "Custom SMM driver handling lock 0x3a / DXC configurations.",
       "url": "https://github.com/Alpha08-BNR/Driver-SMM-lock-0x3a-DXC",
       "linkText": "View Source Code &rarr;"
     }
