@@ -17,7 +17,8 @@
             --border-color: #374151;
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-         [data-theme="light"] {
+        
+        [data-theme="light"] {
             --bg-color: #f8fafc;
             --surface-color: #ffffff;
             --surface-card: #f1f5f9;
@@ -26,7 +27,7 @@
             --text-main: #0f172a;
             --text-muted: #64748b;
             --border-color: #cbd5e1;
-         }
+        }
 
         * {
             box-sizing: border-box;
@@ -41,6 +42,7 @@
             line-height: 1.6;
             overflow-x: hidden;
             scroll-behavior: smooth;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         header {
@@ -48,10 +50,11 @@
             top: 0;
             left: 0;
             width: 100%;
-            background-color: rgba(11, 15, 25, 0.9);
+            background-color: var(--surface-color);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border-color);
             z-index: 1000;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
 
         .nav-container {
@@ -77,6 +80,12 @@
             color: var(--primary-color);
         }
 
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
         .nav-links {
             display: flex;
             gap: 2rem;
@@ -93,6 +102,27 @@
 
         .nav-links a:hover {
             color: var(--primary-color);
+        }
+
+        /* CSS cho nút chuyển đổi màu giao diện */
+        .theme-toggle-btn {
+            background: var(--surface-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .theme-toggle-btn:hover {
+            border-color: var(--primary-color);
+            transform: scale(1.05);
         }
 
         .hamburger {
@@ -219,6 +249,7 @@
             background-color: var(--surface-color);
             border-top: 1px solid var(--border-color);
             border-bottom: 1px solid var(--border-color);
+            transition: background-color 0.3s ease;
         }
 
         .section-header {
@@ -237,7 +268,6 @@
             font-size: 1.1rem;
         }
 
-        /* Thanh tìm kiếm cho ngăn xếp bên ngoài */
         .search-box-container {
             max-width: 600px;
             margin: 0 auto 3rem;
@@ -315,6 +345,7 @@
             padding: 4rem 2rem 2rem;
             text-align: center;
             color: var(--text-muted);
+            transition: background-color 0.3s ease;
         }
 
         .footer-content {
@@ -393,16 +424,22 @@
     <header>
         <div class="nav-container">
             <a href="#" class="logo">Website<span>Core</span></a>
-            <button class="hamburger" id="hamburger" aria-label="Toggle Navigation">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="#architecture">Architecture</a></li>
-                <!-- Thêm mục mới vào menu 3 gạch / thanh điều hướng -->
-                <li><a href="#external-stack">External Docs & Repos</a></li>
-            </ul>
+            
+            <div class="nav-right">
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#architecture">Architecture</a></li>
+                    <li><a href="#external-stack">External Docs & Repos</a></li>
+                </ul>
+
+                <!-- Đã di chuyển nút bấm ra đúng cấu trúc HTML bên trong thanh menu -->
+                <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme">⚫</button>
+
+                <button class="hamburger" id="hamburger" aria-label="Toggle Navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
         </div>
     </header>
 
@@ -457,20 +494,18 @@
         </div>
     </section>
 
-    <!-- Ngăn lớn chứa danh sách động kết hợp với Thanh tìm kiếm (Search Bar) -->
     <section id="external-stack" class="features" style="background-color: var(--bg-color);">
         <div class="section-header">
             <h2 id="stack-main-title">External Docs & Repos</h2>
             <p id="stack-main-desc">Loading configuration from external stacks...</p>
         </div>
         
-        <!-- Ô tìm kiếm động -->
         <div class="search-box-container">
             <input type="text" id="stackSearchInput" class="search-input" placeholder="Type keywords (e.g., privilege, log, rolling)...">
         </div>
 
         <div class="features-grid" id="stack-cards-container">
-            <!-- Dữ liệu được nạp tự động qua JavaScript từ file JSON -->
+            
         </div>
     </section>
 
@@ -486,7 +521,7 @@
     </footer>
 
     <script>
-        // Xử lý menu responsive trên thiết bị di động
+        // Mobile 
         const hamburger = document.getElementById('hamburger');
         const navLinks = document.getElementById('navLinks');
 
@@ -500,10 +535,10 @@
             });
         });
 
-        // Biến lưu trữ dữ liệu các card để phục vụ tính năng tìm kiếm
+        // Variable data
         let allStackItems = [];
 
-        // Xử lý nạp động dữ liệu ngăn xếp từ file JSON ngoài và kích hoạt tìm kiếm theo từ khóa
+        // Connect link.json
         document.addEventListener("DOMContentLoaded", function () {
             const jsonFileUrl = './stack/link.json'; 
 
@@ -526,17 +561,16 @@
                     }
                 })
                 .catch(error => {
-                    console.error('Lỗi khi tải ngăn xếp:', error);
+                    console.error('error install stack:', error);
                     const descEl = document.getElementById('stack-main-desc');
                     if (descEl) descEl.textContent = 'Information not found.';
                 });
 
-            // Lắng nghe sự kiện gõ phím vào ô tìm kiếm
+            // Listen keyboard 
             const searchInput = document.getElementById('stackSearchInput');
             searchInput.addEventListener('input', function (e) {
                 const keyword = e.target.value.toLowerCase().trim();
                 
-                // Lọc danh sách nếu tiêu đề hoặc mô tả chứa từ khóa người dùng gõ
                 const filteredItems = allStackItems.filter(item => {
                     return item.title.toLowerCase().includes(keyword) || 
                            item.description.toLowerCase().includes(keyword);
@@ -546,7 +580,7 @@
             });
         });
 
-        // Hàm hỗ trợ vẽ các thẻ card ra màn hình
+        // Functions gender card
         function renderCards(items) {
             const container = document.getElementById('stack-cards-container');
             if (!container) return;
@@ -570,6 +604,16 @@
                 container.appendChild(card);
             });
         }
-    </script>
-</body>
-</html>
+
+        //  Light / Dark Theme
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const htmlElement = document.documentElement;
+
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        if (savedTheme === 'light') {
+            htmlElement.setAttribute('data-theme', 'light');
+            themeToggleBtn.textContent = '⚪';
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+          
