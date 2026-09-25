@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus Architecture - Systems & Low-Level Engineering</title>
+    <title>Nexus Architecture</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -382,7 +382,7 @@
 
     <header>
         <div class="nav-container">
-            <a href="#" class="logo">Nexus<span>Core</span></a>
+            <a href="#" class="logo">WS<span>A</span></a>
             <button class="hamburger" id="hamburger" aria-label="Toggle Navigation">
                 <span></span>
                 <span></span>
@@ -467,7 +467,7 @@
 
     <footer>
         <div class="footer-content">
-            <a href="#" class="logo">Nexus<span>Core</span></a>
+            <a href="#" class="logo">Alpha<span>08</span></a>
             <ul class="footer-links">
                 <li><a href="#architecture">Architecture</a></li>
                 <li><a href="#external-stack">External Docs & Repos</a></li>
@@ -501,7 +501,7 @@
             fetch(jsonFileUrl)
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('Không thể kết nối tới file cấu hình.');
+                        throw new Error('Can not connect file.');
                     }
                     return response.json();
                 })
@@ -519,7 +519,7 @@
                 .catch(error => {
                     console.error('Lỗi khi tải ngăn xếp:', error);
                     const descEl = document.getElementById('stack-main-desc');
-                    if (descEl) descEl.textContent = 'Chưa thiết lập file dữ liệu hoặc đường dẫn JSON không hợp lệ.';
+                    if (descEl) descEl.textContent = 'Information not found.';
                 });
 
             // Lắng nghe sự kiện gõ phím vào ô tìm kiếm
