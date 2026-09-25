@@ -22,6 +22,21 @@
       "description": "Utility supporting system log filtering and processing.",
       "url": "https://github.com/Alpha08-BNR/Log-filtering-support",
       "linkText": "View Source Code &rarr;"
+    },
+    {
+      "title": "indirect syscall + halo's gate + fake return address",
+      "url": "https://github.com/Alpha08-BNR/indirect-syscall-halo-gate-fakeret",
+      "linkText": "View Source Code &rarr;"
+    },
+    {
+      "title": "Driver SMM lock SMRAM",
+      "url": "https://github.com/Alpha08-BNR/Driver-SMM-lock-Ram",
+      "linkText": "View Source Code &rarr;"
+    },
+    {
+      "title": "Driver SMM lock 0x3a",
+      "url": "https://github.com/Alpha08-BNR/Driver-SMM-lock-0x3a-DXC",
+      "linkText": "View Source Code &rarr;"
     }
   ]
 }
