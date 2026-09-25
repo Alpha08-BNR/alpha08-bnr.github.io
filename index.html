@@ -604,8 +604,7 @@
                 container.appendChild(card);
             });
         }
-
-        //  Light / Dark Theme
+                //  Light / Dark Theme
         const themeToggleBtn = document.getElementById('themeToggleBtn');
         const htmlElement = document.documentElement;
 
@@ -614,6 +613,22 @@
             htmlElement.setAttribute('data-theme', 'light');
             themeToggleBtn.textContent = '⚪';
         }
+
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            if (currentTheme === 'light') {
+                htmlElement.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'dark');
+                themeToggleBtn.textContent = '⚫';
+            } else {
+                htmlElement.setAttribute('data-theme', 'light');
+                localStorage.setItem('theme', 'light');
+                themeToggleBtn.textContent = '⚪';
+            }
+        });
+        
+
+        
 
         themeToggleBtn.addEventListener('click', () => {
           
