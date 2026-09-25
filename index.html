@@ -416,8 +416,8 @@
                 <span class="keyword">section</span> .text<br>
                 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">global</span> _start<br><br>
                 _start:<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">mov</span> eax, 0xCFC<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">mov</span> dx, eax<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">pop</span> eax<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">mov</span> dx, 0xCFC<br>
                 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">out dx ,eax</span>
             </div>
         </div>
